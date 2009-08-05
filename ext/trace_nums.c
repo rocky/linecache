@@ -34,14 +34,28 @@
 #include <ruby.h>
 #include <version.h>
 #include <node.h>
-#include <env.h>
 #include <rubysig.h>
 #include "trace_nums.h"
 
 VALUE mTraceLineNumbers;
-extern NODE *ruby_eval_tree_begin;
+RUBY_EXTERN NODE *ruby_eval_tree_begin;
+RUBY_EXTERN int ruby_in_eval;
 
 #define nd_3rd   u3.node
+
+extern struct FRAME {
+    VALUE self;
+    int argc;
+    ID last_func;
+    ID orig_func;
+    VALUE last_class;
+    struct FRAME *prev;
+    struct FRAME *tmp;
+    struct RNode *node;
+    int iter;
+    int flags;
+    unsigned long uniq;
+} *ruby_frame;
 
 struct METHOD {
   VALUE klass, rklass;
@@ -87,7 +101,7 @@ struct BLOCK {
 #endif
 
 /* Used just in debugging. */
-static indent_level = 0;
+static int indent_level = 0;
 
 static
 void ln_eval(VALUE self, NODE * n, VALUE ary) {

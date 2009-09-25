@@ -77,9 +77,11 @@ class TestLineCache < Test::Unit::TestCase
                  "Should not find './short-file' in SCRIPT_LINES__")
     assert_equal(true, 78 < LineCache.size(__FILE__))
     Dir.chdir(File.dirname(__FILE__)) do 
-      load('./short-file', 0)
-      assert_equal(true, LineCache::cached_script?('./short-file'),
-                   "Should be able to find './short-file' in SCRIPT_LINES__")
+      filename = './short-file'
+      load(filename, 0)
+      fullname = File.expand_path(filename)
+      assert_equal(true, LineCache::cached_script?(fullname),
+                   "Should be able to find '#{filename}' in SCRIPT_LINES__")
     end
   end
 
@@ -136,9 +138,9 @@ class TestLineCache < Test::Unit::TestCase
 
   def test_trace_line_numbers
     test_file = File.join(@@TEST_DIR, 'short-file')
-    assert_equal([], LineCache::trace_line_numbers(test_file))
+    assert_equal([2], LineCache::trace_line_numbers(test_file))
     test_file = File.join(@@TEST_DIR, 'rcov-bug.rb')
-    assert_equal([3, 10], LineCache::trace_line_numbers(test_file))
+    assert_equal([3, 5, 10, 7], LineCache::trace_line_numbers(test_file))
   end
 
   def test_sha1

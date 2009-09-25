@@ -4,16 +4,12 @@ require 'test/unit'
 require 'fileutils'
 require 'tempfile'
 
-# require 'rubygems'
-# require 'ruby-debug'; Debugger.init
-
 SCRIPT_LINES__ = {} unless defined? SCRIPT_LINES__
 # Test TestLineNumbers module
 class TestLineNumbers1 < Test::Unit::TestCase
 
   @@TEST_DIR = File.expand_path(File.dirname(__FILE__))
-  @@TOP_SRC_DIR = File.join(@@TEST_DIR, '..', 'lib')
-  require File.join(@@TOP_SRC_DIR, 'tracelines.rb')
+  require_relative %w(.. lib tracelines)
 
   @@rcov_file = File.join(@@TEST_DIR, 'rcov-bug.rb')
   File.open(@@rcov_file, 'r') {|fp|
@@ -28,8 +24,8 @@ class TestLineNumbers1 < Test::Unit::TestCase
 
   def test_for_string
     string = "# Some rcov bugs.\nz = \"\nNow is the time\n\"\n\nz =~ \n     /\n      5\n     /ix\n"
-    rcov_lines = TraceLineNumbers.lnums_for_str(string)
-    assert_equal([2, 9], rcov_lines)
+    rcov_lines = TraceLineNumbers::lnums_for_str(string)
+    assert_equal([2, 4, 9, 6], rcov_lines)
   end
 
   def test_for_string_array

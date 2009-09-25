@@ -1,5 +1,4 @@
-# [3, 4, 5, 6, 7, 9]
-# Note: lines 5 and 7 won't appear in a trace.
+# [ 2, 3, 5, 8, 9, 4, 6]
 case '3'
 when '4'
   x = 5

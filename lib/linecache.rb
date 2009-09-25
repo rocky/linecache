@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # $Id$
 # 
-#   Copyright (C) 2007, 2008 Rocky Bernstein <rockyb@rubyforge.net>
+#   Copyright (C) 2007, 2008, 2009 Rocky Bernstein <rockyb@rubyforge.net>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -64,9 +64,8 @@ SCRIPT_LINES__ = {} unless defined? SCRIPT_LINES__
 
 require 'digest/sha1'
 require 'set'
+require_relative 'tracelines'
 
-begin require 'rubygems' rescue LoadError end
-require 'tracelines'
 # require 'ruby-debug' ; Debugger.start
 
 # = module LineCache

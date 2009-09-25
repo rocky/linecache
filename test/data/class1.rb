@@ -1,4 +1,4 @@
-# [3, 4]
+# [3]
 class
   A 
   class B ; 

@@ -9,7 +9,7 @@ require 'test/unit'
 class TestLineNumbers2 < Test::Unit::TestCase
   @@TEST_DIR = File.expand_path(File.dirname(__FILE__))
   @@TOP_SRC_DIR = File.join(@@TEST_DIR, '..')
-  require File.join(@@TOP_SRC_DIR, 'lib', 'tracelines.rb')
+  require_relative %w(.. lib tracelines)
   
   def test_all_lnum_data
     test_dir = File.join(@@TEST_DIR, 'data')
@@ -28,7 +28,8 @@ class TestLineNumbers2 < Test::Unit::TestCase
           assert nil, "Failed reading expected values from #{f}"
         else
           got_lnums = TraceLineNumbers.lnums_for_str(lines)
-          assert_equal(expected_lnums, got_lnums)
+          assert_equal(expected_lnums, got_lnums,
+                       "Mismatch for file #{f}")
         end
       end
     end

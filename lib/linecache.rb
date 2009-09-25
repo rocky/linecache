@@ -130,8 +130,13 @@ module LineCache
       if File.exist?(path)
         cache_info = @@file_cache[filename].stat
         stat = File.stat(path)
-        if stat && 
-            (cache_info.size != stat.size or cache_info.mtime != stat.mtime)
+        if cache_info
+          if stat && 
+              (cache_info.size != stat.size or cache_info.mtime != stat.mtime)
+            result << filename
+            update_cache(filename, use_script_lines)
+          end
+        else
           result << filename
           update_cache(filename, use_script_lines)
         end

@@ -15,7 +15,6 @@ class TestLineNumbers2 < Test::Unit::TestCase
     test_dir = File.join(@@TEST_DIR, 'data')
     Dir.chdir(test_dir) do 
       Dir.glob('*.rb').sort.each do |f|
-        puts f
         fp = File.open(f, 'r')
         lines = fp.read
         fp.rewind

@@ -48,7 +48,7 @@ end
 default_spec = Gem::Specification.new do |spec|
   spec.name = "linecache"
   
-  # spec.homepage = "http://rubyforge.org/projects/rocky-hacks/linecache"
+  spec.homepage = "http://rubyforge.org/projects/rocky-hacks/linecache"
   spec.summary = "Read file with caching"
   spec.description = <<-EOF
 LineCache is a module for reading and caching lines. This may be useful for
@@ -65,7 +65,8 @@ EOF
 
   spec.required_ruby_version = '>= 1.9.1'
   spec.date = Time.now
-  # spec.rubyforge_project = 'rocky-hacks'
+  spec.add_dependency('rb-threadframe', '>= 0.2')
+  spec.rubyforge_project = 'rocky-hacks'
   
   # rdoc
   spec.has_rdoc = true

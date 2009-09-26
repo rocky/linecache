@@ -24,7 +24,7 @@ module TraceLineNumbers
   # stopped at given a file name of a Ruby program.
   def lnums_for_file(file, uniq=true)
     iseq = RubyVM::InstructionSequence::compile_file(file)
-    lnums = iseq.offset2lines.values.flatten
+    lnums = iseq.offsetlines.values.flatten
     uniq ? lnums.uniq : lnums
   end
   module_function :lnums_for_file
@@ -33,7 +33,7 @@ module TraceLineNumbers
   # stopped at given a string.
   def lnums_for_str(string, uniq=true)
     iseq = RubyVM::InstructionSequence::compile(string)
-    lnums = iseq.offset2lines.values.flatten
+    lnums = iseq.offsetlines.values.flatten
     uniq ? lnums.uniq : lnums
   end
   module_function :lnums_for_str

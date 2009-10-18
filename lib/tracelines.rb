@@ -20,21 +20,27 @@ require 'thread_frame'
 
 module TraceLineNumbers
 
+  def lnums_for_iseq(iseq, uniq=true)
+    lnums = iseq.child_iseqs.map { |iseq|
+      iseq.offsetlines.values.flatten
+    }.flatten.sort
+    uniq ? lnums.uniq : lnums
+  end
+  module_function :lnums_for_iseq
+
   # Return an array of lines numbers that could be 
   # stopped at given a file name of a Ruby program.
   def lnums_for_file(file, uniq=true)
-    iseq = RubyVM::InstructionSequence::compile_file(file)
-    lnums = iseq.offsetlines.values.flatten
-    uniq ? lnums.uniq : lnums
+    lnums_for_iseq(RubyVM::InstructionSequence::compile_file(file),
+                   uniq)
   end
   module_function :lnums_for_file
 
   # Return an array of lines numbers that could be 
   # stopped at given a string.
   def lnums_for_str(string, uniq=true)
-    iseq = RubyVM::InstructionSequence::compile(string)
-    lnums = iseq.offsetlines.values.flatten
-    uniq ? lnums.uniq : lnums
+    lnums_for_iseq(RubyVM::InstructionSequence::compile(string),
+                   uniq)
   end
   module_function :lnums_for_str
 

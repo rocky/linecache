@@ -25,7 +25,7 @@ class TestLineNumbers1 < Test::Unit::TestCase
   def test_for_string
     string = "# Some rcov bugs.\nz = \"\nNow is the time\n\"\n\nz =~ \n     /\n      5\n     /ix\n"
     rcov_lines = TraceLineNumbers::lnums_for_str(string)
-    assert_equal([2, 4, 9, 6], rcov_lines)
+    assert_equal([2, 4, 6, 9], rcov_lines)
   end
 
   def test_for_string_array

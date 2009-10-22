@@ -226,7 +226,7 @@ module LineCache
   end
   module_function :path
 
-  def remap_file(from_file, to_file)
+  def remap_file(to_file, from_file)
     @@file2file_remap[to_file] = from_file
   end
   module_function :remap_file

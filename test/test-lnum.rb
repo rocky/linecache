@@ -9,7 +9,7 @@ require 'test/unit'
 class TestLineNumbers2 < Test::Unit::TestCase
   @@TEST_DIR = File.expand_path(File.dirname(__FILE__))
   @@TOP_SRC_DIR = File.join(@@TEST_DIR, '..')
-  require_relative %w(.. lib tracelines)
+  require_relative '../lib/tracelines'
   
   def test_all_lnum_data
     test_dir = File.join(@@TEST_DIR, 'data')

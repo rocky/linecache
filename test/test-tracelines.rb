@@ -9,7 +9,7 @@ SCRIPT_LINES__ = {} unless defined? SCRIPT_LINES__
 class TestLineNumbers1 < Test::Unit::TestCase
 
   @@TEST_DIR = File.expand_path(File.dirname(__FILE__))
-  require_relative %w(.. lib tracelines)
+  require_relative '../lib/tracelines'
 
   @@rcov_file = File.join(@@TEST_DIR, 'rcov-bug.rb')
   File.open(@@rcov_file, 'r') {|fp|

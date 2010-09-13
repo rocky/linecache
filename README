@@ -37,7 +37,7 @@ source lines.
 == Other stuff
 
 Author::   Rocky Bernstein <rockyb@rubyforge.net>
-License::  Copyright (c) 2007, 2008 Rocky Bernstein
+License::  Copyright (c) 2007, 2008, 2009 Rocky Bernstein
            Released under the GNU GPL 2 license
 
 == Warranty
@@ -46,5 +46,3 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
-$Id$

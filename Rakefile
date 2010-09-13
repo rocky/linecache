@@ -46,7 +46,7 @@ end
 
 # Base GEM Specification
 default_spec = Gem::Specification.new do |spec|
-  spec.name = "linecache"
+  spec.name = "linecache-tf"
   
   spec.homepage = "http://rubyforge.org/projects/rocky-hacks/linecache"
   spec.summary = "Read file with caching"
@@ -55,7 +55,7 @@ LineCache is a module for reading and caching lines. This may be useful for
 example in a debugger where the same lines are shown many times.
 EOF
 
-  spec.version = "1.9.#{PKG_VERSION}"
+  spec.version = "#{PKG_VERSION}"
 
   spec.author = "R. Bernstein"
   spec.email = "rockyb@rubyforge.net"
@@ -63,9 +63,9 @@ EOF
   spec.require_path = "lib"
   spec.files = FILES.to_a  
 
-  spec.required_ruby_version = '>= 1.9.1'
+  spec.required_ruby_version = '>= 1.9.2'
   spec.date = Time.now
-  spec.add_dependency('rb-threadframe', '>= 0.2')
+  spec.add_dependency('rb-threadframe', '>= 0.32')
   spec.rubyforge_project = 'rocky-hacks'
   
   # rdoc

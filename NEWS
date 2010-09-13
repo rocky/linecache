@@ -1,4 +1,8 @@
 0.43
+09-12-10
+- First 1.9.2 release via rb-threadframe
+
+0.43
 06-12-08
 - tolerance for finding windows extension in lib rather than ext.
 

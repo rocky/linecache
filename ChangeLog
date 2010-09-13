@@ -1,3 +1,16 @@
+2010-04-25 13:08  Rocky Bernstein
+
+	* Rakefile: User needs to use "sudo rake install" when needed.
+
+2010-04-21 22:02  Rocky Bernstein
+
+	* test/test-lnum.rb, test/test-tracelines.rb: Remove array
+	  require_relative
+
+2010-04-21 22:01  Rocky Bernstein
+
+	* ChangeLog: Administrivia
+
 2010-03-23 16:30  Rocky Bernstein
 
 	* ChangeLog, Rakefile: Add install targets.

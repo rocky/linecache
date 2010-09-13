@@ -53,6 +53,8 @@ default_spec = Gem::Specification.new do |spec|
   spec.description = <<-EOF
 LineCache is a module for reading and caching lines. This may be useful for
 example in a debugger where the same lines are shown many times.
+
+This version works only with a patched version of Ruby 1.9.2 and rb-threadframe.
 EOF
 
   spec.version = "#{PKG_VERSION}"

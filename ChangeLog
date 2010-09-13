@@ -1,3 +1,7 @@
+2010-09-13 14:42  Rocky Bernstein
+
+	* ChangeLog, Rakefile: ChangeLog now gets info from branch
+
 2010-09-13 14:21  Rocky Bernstein
 
 	* NEWS: One more update

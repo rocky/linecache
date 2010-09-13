@@ -1,5 +1,5 @@
-0.43
-09-12-10
+tf-0.43
+Sept 13, 2010
 - First 1.9.2 release via rb-threadframe
 
 0.43
@@ -29,5 +29,3 @@
 0.1
 
 - Initial release of LineCache, a module for reading and caching lines.
-
-$Id$

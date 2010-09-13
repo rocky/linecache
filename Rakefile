@@ -41,7 +41,7 @@ task :check => :test
 
 desc "Create a GNU-style ChangeLog via svn2cl"
 task :ChangeLog do
-  system("svn2cl --authors=svn2cl_usermap")
+  system("svn2cl svn+ssh://rockyb@rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9 --authors=svn2cl_usermap")
 end
 
 # Base GEM Specification

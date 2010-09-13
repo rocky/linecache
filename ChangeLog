@@ -1,3 +1,11 @@
+2010-09-13 14:21  Rocky Bernstein
+
+	* NEWS: One more update
+
+2010-09-13 14:19  Rocky Bernstein
+
+	* ChangeLog, NEWS, README, Rakefile: Get ready for release tf-0.43
+
 2010-04-25 13:08  Rocky Bernstein
 
 	* Rakefile: User needs to use "sudo rake install" when needed.

@@ -4,135 +4,81 @@ require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
 require 'rake/testtask'
+require 'fileutils'
 
-# ------- Default Package ----------
-PKG_VERSION = open(File.join(File.dirname(__FILE__), 'VERSION')) do 
-  |f| f.readlines[0].chomp
+ROOT_DIR = File.dirname(__FILE__)
+require File.join(ROOT_DIR, '/lib/version')
+
+def gemspec
+  @gemspec ||= eval(File.read('.gemspec'), binding, '.gemspec')
 end
-PKG_NAME           = 'linecache'
-PKG_FILE_NAME      = "#{PKG_NAME}-#{PKG_VERSION}"
-RUBY_FORGE_PROJECT = 'rocky-hacks'
-RUBY_FORGE_USER    = 'rockyb'
 
-FILES = FileList[
-  'AUTHORS',
-  'COPYING',
-  'ChangeLog',
-  'NEWS',
-  'README',
-  'Rakefile',
-  'VERSION',
-  'lib/*.rb',
-  'test/*.rb',
-  'test/data/*.rb',
-  'test/short-file'
-]                        
+desc "Build the gem"
+task :package=>:gem
+task :gem=>:gemspec do
+  sh "gem build .gemspec"
+  FileUtils.mkdir_p 'pkg'
+  FileUtils.mv "#{gemspec.name}-#{gemspec.version}.gem", 'pkg'
+end
 
-desc "Test everything."
+desc "Install the gem locally"
+task :install => :gem do
+  sh %{gem install --local pkg/#{gemspec.name}-#{gemspec.version}}
+end
+
+desc "Test everything"
 test_task = task :test => :lib do 
   Rake::TestTask.new(:test) do |t|
+    t.libs << './lib'
     t.pattern = 'test/test-*.rb'
     t.verbose = true
   end
 end
 
-desc "Test everything - same as test."
+desc "same as test"
 task :check => :test
 
 desc "Create a GNU-style ChangeLog via svn2cl"
 task :ChangeLog do
-  system("svn2cl svn+ssh://rockyb@rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9 --authors=svn2cl_usermap")
-end
-
-# Base GEM Specification
-default_spec = Gem::Specification.new do |spec|
-  spec.name = "linecache-tf"
-  
-  spec.homepage = "http://rubyforge.org/projects/rocky-hacks/linecache"
-  spec.summary = "Read file with caching"
-  spec.description = <<-EOF
-LineCache is a module for reading and caching lines. This may be useful for
-example in a debugger where the same lines are shown many times.
-
-This version works only with a patched version of Ruby 1.9.2 and rb-threadframe.
-EOF
-
-  spec.version = "#{PKG_VERSION}"
-
-  spec.author = "R. Bernstein"
-  spec.email = "rockyb@rubyforge.net"
-  spec.platform = Gem::Platform::RUBY
-  spec.require_path = "lib"
-  spec.files = FILES.to_a  
-
-  spec.required_ruby_version = '>= 1.9.2'
-  spec.date = Time.now
-  spec.add_dependency('rb-threadframe', '>= 0.32')
-  spec.rubyforge_project = 'rocky-hacks'
-  
-  # rdoc
-  spec.has_rdoc = true
-  spec.extra_rdoc_files = %w(README lib/linecache.rb lib/tracelines.rb)
-
-  spec.test_files = FileList['test/*.rb']
-end
-
-# Rake task to build the default package
-Rake::GemPackageTask.new(default_spec) do |pkg|
-  pkg.need_tar = true
+  system("svn2cl --authors=svn2cl_usermap")
 end
 
 task :default => [:test]
 
-# desc "Publish linecache to RubyForge."
-# task :publish do 
-#   require 'rake/contrib/sshpublisher'
-  
-#   # Get ruby-debug path.
-#   ruby_debug_path = File.expand_path(File.dirname(__FILE__))
-
-#   publisher = Rake::SshDirPublisher.new("rockyb@rubyforge.org",
-#         "/var/www/gforge-projects/rocky-hacks/linecache", ruby_debug_path)
-# end
-
 desc "Remove built files"
 task :clean => [:clobber_package, :clobber_rdoc]
+
+desc "Generate the gemspec"
+task :generate do
+  puts gemspec.to_ruby
+end
+
+desc "Validate the gemspec"
+task :gemspec do
+  gemspec.validate
+end
 
 # ---------  RDoc Documentation ------
 desc "Generate rdoc documentation"
 Rake::RDocTask.new("rdoc") do |rdoc|
   rdoc.rdoc_dir = 'doc'
-  rdoc.title    = "linecache"
+  rdoc.title    = "LineCache #{LineCache::VERSION} Documentation"
+
   # Show source inline with line numbers
-  rdoc.options << "--inline-source" << "--line-numbers"
-  # Make the readme file the start page for the generated html
-  rdoc.options << '--main' << 'README'
-  rdoc.rdoc_files.include(%w(lib/*.rb README COPYING))
+  rdoc.options += %w(--inline-source --line-numbers)
+
+  # Make the README file the start page for the generated html
+  rdoc.options += %w(--main README)
+
+  rdoc.rdoc_files.include('lib/*.rb', 'README', 'COPYING')
+end
+desc "Same as rdoc"
+task :doc => :rdoc
+
+task :clobber_package do
+  FileUtils.rm_rf File.join(ROOT_DIR, 'pkg')
 end
 
-# desc "Publish the release files to RubyForge."
-# task :rubyforge_upload do
-#   `rubyforge login`
-#   release_command = "rubyforge add_release #{PKG_NAME} #{PKG_NAME} '#{PKG_NAME}-#{PKG_VERSION}' pkg/#{PKG_NAME}-#{PKG_VERSION}.gem"
-#   puts release_command
-#   system(release_command)
-# end
-
-def install(spec, *opts)
-  args = ['gem', 'install', "pkg/#{spec.name}-#{spec.version}.gem"] + opts
-  system(*args)
-end
-
-desc 'Install locally'
-task :install => :package do
-  Dir.chdir(File::dirname(__FILE__)) do
-    # ri and rdoc take lots of time
-    install(default_spec, '--no-ri', '--no-rdoc')
-  end
-end    
-
-task :install_full => :package do
-  Dir.chdir(File::dirname(__FILE__)) do
-    install(default_spec)
-  end
+task :clobber_rdoc do
+  FileUtils.rm_rf File.join(ROOT_DIR, 'doc')
 end

@@ -46,6 +46,6 @@ EOF
 
   # Make the readme file the start page for the generated html
   spec.rdoc_options += %w(--main README)
-  spec.rdoc_options += ['--title', "Columnize #{LineCache::VERSION} Documentation"]
+  spec.rdoc_options += ['--title', "LineCache #{LineCache::VERSION} Documentation"]
 
 end

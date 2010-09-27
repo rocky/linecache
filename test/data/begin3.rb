@@ -1,4 +1,4 @@
-# [ 2, 3 ]
+# [ 3 ]
 begin
   begin
   end

@@ -4,9 +4,6 @@ require 'test/unit'
 require 'fileutils'
 require 'tempfile'
 
-# require 'rubygems'
-# require 'ruby-debug'; Debugger.init
-
 # Test TestLineNumbers module
 class TestLineNumbers1 < Test::Unit::TestCase
 
@@ -19,8 +16,8 @@ class TestLineNumbers1 < Test::Unit::TestCase
   #   first_line = fp.readline[1..-2]
   #   @@rcov_lnums = eval(first_line, binding, __FILE__, __LINE__)
   # }
-  @@rcov_lnums = [0, 0, 3, 5, 6, 7, 8, 10]
-  
+  @@rcov_lnums = [3, 5, 7, 10]
+
   def test_for_file
     rcov_lines = TraceLineNumbers.lnums_for_file(@@rcov_file)
     assert_equal(@@rcov_lnums, rcov_lines)
@@ -29,8 +26,7 @@ class TestLineNumbers1 < Test::Unit::TestCase
   def test_for_string
     string = "# Some rcov bugs.\nz = \"\nNow is the time\n\"\n\nz =~ \n     /\n      5\n     /ix\n"
     rcov_lines = TraceLineNumbers.lnums_for_str(string)
-    puts "FIXME: CompileMethod#lines again"
-    check = [0, 0, 2, 4, 6, 6, 8, 9]
+    check = [2, 4, 6, 9]
     # check = [2, 9]
     assert_equal(check, rcov_lines)
   end

@@ -132,14 +132,13 @@ class TestLineCache < Test::Unit::TestCase
   end
 
   def test_trace_line_numbers
-    puts "FIXME: CompiledMethod.lines returns not in file"
-    ## test_file = File.join(@@TEST_DIR, 'short-file')
+    test_file = File.join(@@TEST_DIR, 'short-file')
+    ## ?? Not sure if this is correct.
+    assert_equal([1], LineCache::trace_line_numbers(test_file))
     test_file = File.join(@@TEST_DIR, 'short-file2')
-    ## assert_equal([], LineCache::trace_line_numbers(test_file))
-    assert_equal([0], LineCache::trace_line_numbers(test_file))
-    puts "FIXME: CompiledMethod.lines for rcov-bug.rb"
-    # test_file = File.join(@@TEST_DIR, 'rcov-bug.rb')
-    # assert_equal([3, 10], LineCache::trace_line_numbers(test_file))
+    assert_equal([1], LineCache::trace_line_numbers(test_file))
+    test_file = File.join(@@TEST_DIR, 'rcov-bug.rb')
+    assert_equal([3, 5, 7, 10], LineCache::trace_line_numbers(test_file))
   end
 
   def test_sha1

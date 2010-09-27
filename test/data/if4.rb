@@ -1,3 +1,4 @@
+# [ 7 ]
 # [ 6, 7, 7, 10, 8]
 
 # Running through Tracer will not give the line numbers in the same

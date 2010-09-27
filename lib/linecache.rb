@@ -21,8 +21,6 @@
 #
 # = linecache
 # A module to read and cache lines of a Ruby program. 
-# == Version
-# :include:VERSION
 
 # == SYNOPSIS
 #
@@ -131,8 +129,13 @@ module LineCache
       if File.exist?(path)
         cache_info = @@file_cache[filename].stat
         stat = File.stat(path)
-        if stat && 
-            (cache_info.size != stat.size or cache_info.mtime != stat.mtime)
+        if cache_info
+          if stat && 
+              (cache_info.size != stat.size or cache_info.mtime != stat.mtime)
+            result << filename
+            update_cache(filename, use_script_lines)
+          end
+        else
           result << filename
           update_cache(filename, use_script_lines)
         end
@@ -161,18 +164,18 @@ module LineCache
       
   # Return true if filename is cached
   def cached?(filename)
-    @@file_cache.member?(unmap_file(filename))
+    @@file_cache.member?(map_file(filename))
   end
   module_function :cached?
 
   def cached_script?(filename)
     false
-    ## SCRIPT_LINES__.member?(unmap_file(filename))
+    ## SCRIPT_LINES__.member?(map_file(filename))
   end
   module_function :cached_script?
       
   def empty?(filename)
-    filename=unmap_file(filename)
+    filename=map_file(filename)
     @@file_cache[filename].lines.empty?
   end
   module_function :empty?
@@ -189,8 +192,8 @@ module LineCache
   #  lines = LineCache.getlines('myfile.rb')
   #
   def getline(filename, line_number, reload_on_change=true)
-    filename = unmap_file(filename)
-    filename, line_number = unmap_file_line(filename, line_number)
+    filename = map_file(filename)
+    filename, line_number = map_file_line(filename, line_number)
     lines = getlines(filename, reload_on_change)
     if lines and (1..lines.size) === line_number
         return lines[line_number-1]
@@ -204,7 +207,7 @@ module LineCache
   # previously cached use the results from the cache. Return nil
   # if we can't get lines
   def getlines(filename, reload_on_change=false)
-    filename = unmap_file(filename)
+    filename = map_file(filename)
     checkcache(filename) if reload_on_change
     if @@file_cache.member?(filename)
       return @@file_cache[filename].lines
@@ -217,13 +220,13 @@ module LineCache
 
   # Return full filename path for filename
   def path(filename)
-    filename = unmap_file(filename)
+    filename = map_file(filename)
     return nil unless @@file_cache.member?(filename)
     @@file_cache[filename].path
   end
   module_function :path
 
-  def remap_file(from_file, to_file)
+  def remap_file(to_file, from_file)
     @@file2file_remap[to_file] = from_file
   end
   module_function :remap_file
@@ -243,7 +246,7 @@ module LineCache
   
   # Return SHA1 of filename.
   def sha1(filename)
-    filename = unmap_file(filename)
+    filename = map_file(filename)
     return nil unless @@file_cache.member?(filename)
     return @@file_cache[filename].sha1.hexdigest if 
       @@file_cache[filename].sha1
@@ -258,7 +261,7 @@ module LineCache
       
   # Return the number of lines in filename
   def size(filename)
-    filename = unmap_file(filename)
+    filename = map_file(filename)
     return nil unless @@file_cache.member?(filename)
     @@file_cache[filename].lines.length
   end
@@ -288,12 +291,12 @@ module LineCache
   end
   module_function :trace_line_numbers
     
-  def unmap_file(file)
+  def map_file(file)
     @@file2file_remap[file] ? @@file2file_remap[file] : file
   end
-  module_function :unmap_file
+  module_function :map_file
 
-  def unmap_file_line(file, line)
+  def map_file_line(file, line)
     if @@file2file_remap_lines[file]
       @@file2file_remap_lines[file].each do |from_file, range, start|
         if range === line
@@ -302,9 +305,9 @@ module LineCache
         end
       end
     end
-    return [file, line]
+    return [map_file(file), line]
   end
-  module_function :unmap_file_line
+  module_function :map_file_line
 
   # Update a cache entry.  If something's
   # wrong, return nil. Return true if the cache was updated and false

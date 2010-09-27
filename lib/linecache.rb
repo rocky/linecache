@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
-# $Id$
-# 
-#   Copyright (C) 2007, 2008 Rocky Bernstein <rockyb@rubyforge.net>
+#   Copyright (C) 2007, 2008, 2010 Rocky Bernstein <rockyb@rubyforge.net>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -60,18 +58,20 @@
 # it reads. The key the setting of __FILE__ at the time when Ruby does
 # its read. LineCache keeps a separate copy of the lines elsewhere
 # and never destroys SCRIPT_LINES__
-SCRIPT_LINES__ = {} unless defined? SCRIPT_LINES__
+## SCRIPT_LINES__ = {} unless defined? SCRIPT_LINES__
 
 require 'digest/sha1'
 require 'set'
 
-begin require 'rubygems' rescue LoadError end
-require 'tracelines'
+require 'rubygems'
+require 'require_relative'
+require_relative 'tracelines'
 # require 'ruby-debug' ; Debugger.start
 
 # = module LineCache
 # A module to read and cache lines of a Ruby program. 
 module LineCache
+  VERSION = '0.43.git'
   LineCacheInfo = Struct.new(:stat, :line_numbers, :lines, :path, :sha1) unless
     defined?(LineCacheInfo)
  
@@ -166,7 +166,8 @@ module LineCache
   module_function :cached?
 
   def cached_script?(filename)
-    SCRIPT_LINES__.member?(unmap_file(filename))
+    false
+    ## SCRIPT_LINES__.member?(unmap_file(filename))
   end
   module_function :cached_script?
       
@@ -316,23 +317,23 @@ module LineCache
     @@file_cache.delete(filename)
     path = File.expand_path(filename)
     
-    if use_script_lines
-      list = [filename]
-      list << @@file2file_remap[path] if @@file2file_remap[path]
-      list.each do |name| 
-        if !SCRIPT_LINES__[name].nil? && SCRIPT_LINES__[name] != true
-          begin 
-            stat = File.stat(name)
-          rescue
-            stat = nil
-          end
-          lines = SCRIPT_LINES__[name]
-          @@file_cache[filename] = LineCacheInfo.new(stat, nil, lines, path, nil)
-          @@file2file_remap[path] = filename
-          return true
-        end
-      end
-    end
+    # if use_script_lines
+    #   list = [filename]
+    #   list << @@file2file_remap[path] if @@file2file_remap[path]
+    #   list.each do |name| 
+    #     if !SCRIPT_LINES__[name].nil? && SCRIPT_LINES__[name] != true
+    #       begin 
+    #         stat = File.stat(name)
+    #       rescue
+    #         stat = nil
+    #       end
+    #       lines = SCRIPT_LINES__[name]
+    #       @@file_cache[filename] = LineCacheInfo.new(stat, nil, lines, path, nil)
+    #       @@file2file_remap[path] = filename
+    #       return true
+    #     end
+    #   end
+    # end
       
     if File.exist?(path)
       stat = File.stat(path)
@@ -393,8 +394,8 @@ if __FILE__ == $0
   LineCache::clear_file_cache 
   puts("#{__FILE__} is now %scached." % 
        yes_no(LineCache::cached?(__FILE__)))
-  digest = SCRIPT_LINES__.select{|k,v| k =~ /digest.rb$/}
-  puts digest.first[0] if digest
+  # digest = SCRIPT_LINES__.select{|k,v| k =~ /digest.rb$/}
+  # puts digest.first[0] if digest
   line = LineCache::getline(__FILE__, 7)
   puts "The 7th line is\n#{line}" 
   LineCache::remap_file_lines(__FILE__, 'test2', (10..20), 6)

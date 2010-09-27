@@ -1,3 +1,7 @@
+
+09-26-10
+- First rubinius release
+
 0.43
 06-12-08
 - tolerance for finding windows extension in lib rather than ext.
@@ -26,4 +30,3 @@
 
 - Initial release of LineCache, a module for reading and caching lines.
 
-$Id$

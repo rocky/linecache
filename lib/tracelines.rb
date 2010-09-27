@@ -1,21 +1,18 @@
 #!/usr/bin/env ruby
-# $Id$
-begin require 'rubygems' rescue LoadError end
-# require 'ruby-debug' ; Debugger.start(:post-mortem => true)
+
+
+## FIXME: CompiledMethod#lines doesn't seem to give lines for 
+## embedded methods, It also somethimes gives line number beyond the
+## end of the file. That's why we have the select at the end. However
+
+## if the file has comments at the end we won't be able to detect this.
 
 module TraceLineNumbers
-  @@SRC_DIR = File.expand_path(File.dirname(__FILE__))
-  begin
-    require File.join(@@SRC_DIR, '..', 'ext', 'trace_nums')
-  rescue LoadError
-    # MSWindows seems to put this in lib rather than ext.
-    require File.join(@@SRC_DIR, '..', 'lib', 'trace_nums')
-  end
-
   # Return an array of lines numbers that could be 
   # stopped at given a file name of a Ruby program.
   def lnums_for_file(file)
-    lnums_for_str(File.read(file))
+    n = File.open(file).readlines.size
+    Rubinius::Compiler.compile_file(file).lines.select{|i| i <= n}.sort
   end
   module_function :lnums_for_file
 
@@ -24,24 +21,23 @@ module TraceLineNumbers
   # We assume the each line has \n at the end. If not 
   # set the newline parameters to \n.
   def lnums_for_str_array(string_array, newline='')
-    lnums_for_str(string_array.join(newline))
+    n = string_array.size
+    str = string_array.join(newline)
+    Rubinius::Compiler.compile_string(str).lines.select{|i| i <= n}.sort
   end
   module_function :lnums_for_str_array
+
+  def lnums_for_str(str)
+    n = str.split("\n").size
+    Rubinius::Compiler.compile_string(str).lines.select{|i| i <= n}.sort
+  end
+
+  module_function :lnums_for_str
 end
 
 if __FILE__ == $0
-  SCRIPT_LINES__ = {} unless defined? SCRIPT_LINES__
   # test_file = '../test/rcov-bug.rb'
-  test_file = '../test/lnum-data/begin1.rb'
-  if  File.exists?(test_file)
-    puts TraceLineNumbers.lnums_for_file(test_file).inspect 
-    load(test_file, 0) # for later
-  end
-  puts TraceLineNumbers.lnums_for_file(__FILE__).inspect
-  unless SCRIPT_LINES__.empty?
-    key = SCRIPT_LINES__.keys.first
-    puts key
-    puts SCRIPT_LINES__[key]
-    puts TraceLineNumbers.lnums_for_str_array(SCRIPT_LINES__[key]).inspect
-  end
+  test_file = File.join %W(#{File.dirname(__FILE__)} 
+                           ../test/data/begin1.rb)
+  puts TraceLineNumbers.lnums_for_file(test_file).inspect 
 end

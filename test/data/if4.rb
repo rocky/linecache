@@ -1,5 +1,4 @@
-# [ 7 ]
-# [ 6, 7, 7, 10, 8]
+# [ 6, 6, 7, 8, 10]
 
 # Running through Tracer will not give the line numbers in the same
 # order. Also note 9 before 7. This is because in the parse tree

@@ -12,10 +12,6 @@ class TestLineNumbers2 < Test::Unit::TestCase
     test_dir = File.join(@@TEST_DIR, 'data')
     Dir.chdir(test_dir) do 
       Dir.glob('*.rb').sort.each do |f|
-        if f =~ /match3/
-          puts "Need to consider from match3.rb on"
-          break
-        end
         fp = File.open(f, 'r')
         lines = fp.read
         fp.rewind
@@ -28,7 +24,7 @@ class TestLineNumbers2 < Test::Unit::TestCase
           assert nil, "Failed reading expected values from #{f}"
         else
           got_lnums = TraceLineNumbers.lnums_for_str(lines)
-          assert_equal(expected_lnums, got_lnums)
+          assert_equal(expected_lnums, got_lnums, "Comparing file #{f}")
         end
       end
     end

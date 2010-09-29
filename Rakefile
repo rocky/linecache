@@ -33,13 +33,13 @@ FILES = FileList[
   'test/short-file'
 ]                        
 
-desc "Test everything."
-test_task = task :test => :lib do 
-  Rake::TestTask.new(:test) do |t|
-    t.pattern = 'test/test-*.rb'
-    t.verbose = true
-  end
+desc "Test everything"
+Rake::TestTask.new(:test) do |t|
+  t.libs << './lib'
+  t.pattern = 'test/test-*.rb'
+  t.verbose = true
 end
+task :test => :lib
 
 desc "Create the core ruby-debug shared library extension"
 task :lib do

@@ -148,4 +148,14 @@ class TestLineCache < Test::Unit::TestCase
                  LineCache::sha1(test_file))
   end
 
+  def test_script
+    x = nil
+    line1 = "loc = Rubinius::VM::backtrace(0)[0]"
+    eval(line1 + "
+  x = LineCache::getline(loc.static_scope.script, 1)")
+    assert_equal(line1, x)
+    eval("loc = Rubinius::VM::backtrace(0)[0]
+  assert_equal(2, LineCache::size(loc.static_scope.script))")
+  end
+
 end

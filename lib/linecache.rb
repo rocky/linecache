@@ -52,6 +52,7 @@
 # same name.
 #
 
+require 'tempfile'
 require 'digest/sha1'
 require 'set'
 
@@ -85,6 +86,17 @@ module LineCache
   # ranges. Will probably use this for that, but I'm not sure.
   @@file2file_remap = {} 
   @@file2file_remap_lines = {}
+
+  @@script2file = {} 
+
+  def remove_script_temps
+    @@script2file.values.each do |filename|
+      File.unlink(filename)
+    end
+  end
+  module_function :remove_script_temps
+  at_exit { remove_script_temps }
+
   
   # Clear the file cache entirely.
   def clear_file_cache()
@@ -146,9 +158,9 @@ module LineCache
   module_function :checkcache
 
   # Cache script if it's not already cached.
-  def cache_script(script)
+  def cache_script(script, string=nil, sha1=nil)
     if !@@script_cache.member?(script)
-      update_script_cache(script)
+      update_script_cache(script, string, sha1)
     end
     script
   end
@@ -188,14 +200,13 @@ module LineCache
     if file_or_script.kind_of?(String) 
       @@file_cache.member?(map_file(file_or_script))
     else 
-      @@script_cache.member?(file_or_script)
+      cached_script?(file_or_script)
     end
   end
   module_function :cached?
 
-  def cached_script?(filename)
-    false
-    ## SCRIPT_LINES__.member?(map_file(filename))
+  def cached_script?(script)
+      @@script_cache.member?(script)
   end
   module_function :cached_script?
       
@@ -233,7 +244,7 @@ module LineCache
   end
   module_function :getline
 
-  # Read lines of +script+ and cache the results. However +filename+ was
+  # Read lines of +script+ and cache the results. However +script+ was
   # previously cached use the results from the cache. Return nil
   # if we can't get lines
   def script_getlines(script)
@@ -304,7 +315,7 @@ module LineCache
       @@file_cache[filename].sha1
     sha1 = Digest::SHA1.new
     @@file_cache[filename].lines.each do |line|
-      sha1 << line
+      sha1 << line + "\n"
     end
     @@file_cache[filename].sha1 = sha1
     sha1.hexdigest
@@ -354,6 +365,25 @@ module LineCache
   end
   module_function :map_file
 
+  def map_script(script)
+    if @@script2file[script] 
+      @@script2file[script] 
+    else 
+      # Doc says there's new takes an optional string parameter
+      # But it doesn't work for me
+      sha1 = Digest::SHA1.new
+      string = script.eval_source
+      sha1 << script.eval_source
+      tempfile = Tempfile.new(["eval-#{sha1.hexdigest[0...7]}-", '.rb'])
+      tempfile.open.puts(string)
+      tempfile.close
+      # cache_script(script, string, sha1.hexdigest)
+      @@script2file[script] = tempfile.path
+      tempfile.path
+    end
+  end
+  module_function :map_script
+
   def map_file_line(file, line)
     if @@file2file_remap_lines[file]
       @@file2file_remap_lines[file].each do |from_file, range, start|
@@ -374,11 +404,11 @@ module LineCache
 
   # Update a cache entry.  If something is wrong, return nil. Return
   # true if the cache was updated and false if not. 
-  def update_script_cache(script)
+  def update_script_cache(script, string=nil, sha1=nil)
     return false unless script_is_eval?(script)
-    string = script.eval_source
+    string = script.eval_source unless string
     @@script_cache[script] = 
-      LineCacheInfo.new(nil, nil, string.split(/\n/), nil, nil)
+      LineCacheInfo.new(nil, nil, string.split(/\n/), nil, sha1)
     return true
   end
   module_function :update_script_cache
@@ -423,7 +453,6 @@ module LineCache
   end
 
   module_function :update_cache
-
 end
 
 # example usage
@@ -464,4 +493,6 @@ if __FILE__ == $0
   puts LineCache::getline(loc.static_scope.script, 1)")
   eval("loc = Rubinius::VM::backtrace(0)[0]
   puts LineCache::size(loc.static_scope.script)")
+  eval("loc = Rubinius::VM::backtrace(0)[0]
+  puts LineCache::map_script(loc.static_scope.script)")
 end

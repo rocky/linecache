@@ -144,7 +144,7 @@ class TestLineCache < Test::Unit::TestCase
   def test_sha1
     test_file = File.join(@@TEST_DIR, 'short-file') 
     LineCache::cache(test_file)
-    assert_equal('1134f95ea84a3dcc67d7d1bf41390ee1a03af6d2',
+    assert_equal('3e1d87f3399fc73ae5683e106bce1b5ba823fc50',
                  LineCache::sha1(test_file))
   end
 
@@ -156,6 +156,12 @@ class TestLineCache < Test::Unit::TestCase
     assert_equal(line1, x)
     eval("loc = Rubinius::VM::backtrace(0)[0]
   assert_equal(2, LineCache::size(loc.static_scope.script))")
+    string = "loc = Rubinius::VM::backtrace(0)[0]
+  LineCache::map_script(loc.static_scope.script)"
+    temp_filename = eval(string)
+    got_lines = File.open(temp_filename).readlines.join('')
+    assert_equal(string, got_lines.chomp)
+    assert_equal(1, File.unlink(temp_filename))
   end
 
 end

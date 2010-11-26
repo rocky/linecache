@@ -66,14 +66,14 @@ require_relative 'tracelines'
 # = module LineCache
 # A module to read and cache lines of a Ruby program. 
 module LineCache
-  VERSION = '0.45.git'
+  VERSION = '0.45.dev'
   LineCacheInfo = Struct.new(:stat, :line_numbers, :lines, :path, :sha1) unless
     defined?(LineCacheInfo)
  
   # The file cache. The key is a name as would be given by Ruby for 
   # __FILE__. The value is a LineCacheInfo object. 
   @@file_cache = {} 
-  @@script_cache = {} 
+  @@iseq_cache = {} 
   
   # Maps a string filename (a String) to a key in @@file_cache (a
   # String).
@@ -90,15 +90,15 @@ module LineCache
   @@file2file_remap = {} 
   @@file2file_remap_lines = {}
 
-  @@script2file = {} 
+  @@iseq2file = {} 
 
-  def remove_script_temps
-    @@script2file.values.each do |filename|
+  def remove_iseq_temps
+    @@iseq2file.values.each do |filename|
       File.unlink(filename)
     end
   end
-  module_function :remove_script_temps
-  at_exit { remove_script_temps }
+  module_function :remove_iseq_temps
+  at_exit { remove_iseq_temps }
 
   
   # Clear the file cache entirely.
@@ -109,9 +109,9 @@ module LineCache
   end
   module_function :clear_file_cache
 
-  # Clear the script cache entirely.
-  def clear_script_cache()
-    @@script_cache = {}
+  # Clear the iseq cache entirely.
+  def clear_iseq_cache()
+    @@iseq_cache = {}
   end
   module_function :clear_file_cache
 
@@ -160,10 +160,31 @@ module LineCache
   end
   module_function :checkcache
 
+  # Cache iseq if it's not already cached.
+  def cache_iseq(iseq, string=nil, sha1=nil)
+    if !@@iseq_cache.member?(iseq)
+      update_iseq_cache(iseq, string, sha1)
+    end
+    iseq
+  end
+  module_function :cache_iseq
+
+  # Cache file name or iseq object if it's not already cached.
+  # Return the expanded filename for it in the cache if a filename,
+  # or the iseq, or nil if we can't find the file.
+  def cache(file_or_iseq, reload_on_change=false)
+    if file_or_iseq.kind_of?(String)
+      cache_file(file_or_iseq, reload_on_change)
+    else
+      cache_iseq(file_or_iseq)
+    end
+  end
+  module_function :cache
+
   # Cache filename if it's not already cached.
   # Return the expanded filename for it in the cache
   # or nil if we can't find the file.
-  def cache(filename, reload_on_change=false)
+  def cache_file(filename, reload_on_change=false)
     if @@file_cache.member?(filename)
       checkcache(filename) if reload_on_change
     else
@@ -175,11 +196,15 @@ module LineCache
       nil
     end
   end
-  module_function :cache
+  module_function :cache_file
       
-  # Return true if filename is cached
-  def cached?(filename)
-    @@file_cache.member?(map_file(filename))
+  # Return true if file_or_iseq is cached
+  def cached?(file_or_iseq)
+    if file_or_iseq.kind_of?(String) 
+      @@file_cache.member?(map_file(file_or_iseq))
+    else 
+      cached_iseq?(file_or_iseq)
+    end
   end
   module_function :cached?
 
@@ -205,10 +230,15 @@ module LineCache
   #  $: << '/tmp'
   #  lines = LineCache.getlines('myfile.rb')
   #
-  def getline(filename, line_number, reload_on_change=true)
-    filename = map_file(filename)
-    filename, line_number = map_file_line(filename, line_number)
-    lines = getlines(filename, reload_on_change)
+  def getline(file_or_iseq, line_number, reload_on_change=true)
+    lines = 
+      if file_or_iseq.kind_of?(String)
+        filename = map_file(file_or_iseq)
+        filename, line_number = map_file_line(filename, line_number)
+        getlines(filename, reload_on_change)
+      else
+        iseq_getlines(file_or_iseq)
+      end
     if lines and (1..lines.size) === line_number
         return lines[line_number-1]
     else
@@ -216,6 +246,23 @@ module LineCache
     end
   end
   module_function :getline
+
+  # Read lines of +iseq+ and cache the results. However +iseq+ was
+  # previously cached use the results from the cache. Return nil
+  # if we can't get lines
+  def iseq_getlines(iseq)
+    if @@iseq_cache.member?(iseq)
+      return @@iseq_cache[iseq].lines
+    else
+      update_iseq_cache(iseq)
+      if @@iseq_cache.member?(iseq)
+        return @@iseq_cache[iseq].lines 
+      else
+        return nil
+      end
+    end
+  end
+  module_function :iseq_getlines
 
   # Read lines of +filename+ and cache the results. However +filename+ was
   # previously cached use the results from the cache. Return nil
@@ -227,13 +274,18 @@ module LineCache
       return @@file_cache[filename].lines
     else
       update_cache(filename, true)
-      return @@file_cache[filename].lines if @@file_cache.member?(filename)
+      if @@file_cache.member?(filename)
+        return @@file_cache[filename].lines 
+      else
+        return nil
+      end
     end
   end
   module_function :getlines
 
   # Return full filename path for filename
   def path(filename)
+    return unless filename.kind_of?(String)
     filename = map_file(filename)
     return nil unless @@file_cache.member?(filename)
     @@file_cache[filename].path
@@ -274,10 +326,16 @@ module LineCache
   module_function :sha1
       
   # Return the number of lines in filename
-  def size(filename)
-    filename = map_file(filename)
-    return nil unless @@file_cache.member?(filename)
-    @@file_cache[filename].lines.length
+  def size(file_or_iseq)
+    cache(file_or_iseq)
+    if file_or_iseq.kind_of?(String)
+      file_or_iseq = map_file(file_or_iseq)
+      return nil unless @@file_cache.member?(file_or_iseq)
+      @@file_cache[file_or_iseq].lines.length
+    else
+      return nil unless @@iseq_cache.member?(file_or_iseq)
+      @@iseq_cache[file_or_iseq].lines.length
+    end
   end
   module_function :size
 
@@ -310,6 +368,25 @@ module LineCache
   end
   module_function :map_file
 
+  def map_iseq(iseq)
+    if @@iseq2file[iseq] 
+      @@iseq2file[iseq] 
+    else 
+      # Doc says there's new takes an optional string parameter
+      # But it doesn't work for me
+      sha1 = Digest::SHA1.new
+      string = iseq.source
+      sha1 << iseq.source
+      tempfile = Tempfile.new(["eval-#{sha1.hexdigest[0...7]}-", '.rb'])
+      tempfile.open.puts(string)
+      tempfile.close
+      # cache_iseq(iseq, string, sha1.hexdigest)
+      @@iseq2file[iseq] = tempfile.path
+      tempfile.path
+    end
+  end
+  module_function :map_iseq
+
   def map_file_line(file, line)
     if @@file2file_remap_lines[file]
       @@file2file_remap_lines[file].each do |from_file, range, start|
@@ -323,6 +400,22 @@ module LineCache
   end
   module_function :map_file_line
 
+  def iseq_is_eval?(iseq)
+    !!iseq.source
+  end
+  module_function :iseq_is_eval?
+
+  # Update a cache entry.  If something is wrong, return nil. Return
+  # true if the cache was updated and false if not. 
+  def update_iseq_cache(iseq, string=nil, sha1=nil)
+    return false unless iseq_is_eval?(iseq)
+    string = iseq.source unless string
+    @@iseq_cache[iseq] = 
+      LineCacheInfo.new(nil, nil, string.split(/\n/), nil, sha1)
+    return true
+  end
+  module_function :update_iseq_cache
+
   # Update a cache entry.  If something's
   # wrong, return nil. Return true if the cache was updated and false
   # if not.  If use_script_lines is true, use that as the source for the
@@ -334,24 +427,6 @@ module LineCache
     @@file_cache.delete(filename)
     path = File.expand_path(filename)
     
-    if use_script_lines
-      list = [filename]
-      list << @@file2file_remap[path] if @@file2file_remap[path]
-      list.each do |name| 
-        if !SCRIPT_LINES__[name].nil? && SCRIPT_LINES__[name] != true
-          begin 
-            stat = File.stat(name)
-          rescue
-            stat = nil
-          end
-          lines = SCRIPT_LINES__[name]
-          @@file_cache[filename] = LineCacheInfo.new(stat, nil, lines, path, nil)
-          @@file2file_remap[path] = filename
-          return true
-        end
-      end
-    end
-      
     if File.exist?(path)
       stat = File.stat(path)
     elsif File.basename(filename) == filename

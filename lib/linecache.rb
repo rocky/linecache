@@ -49,7 +49,6 @@
 #  # Note lines[6] == line (if /tmp/myruby.rb has 6 lines)
 #
 #  LineCache::clear_file_cache
-#  LineCache::clear_file_cache('/tmp/myruby.rb')
 #  LineCache::update_cache   # Check for modifications of all cached files.
 #
 # Some parts of the interface is derived from the Python module of the

@@ -146,7 +146,7 @@ class TestLineCache < Test::Unit::TestCase
   def test_sha1
     test_file = File.join(@@TEST_DIR, 'short-file') 
     LineCache::cache(test_file)
-    assert_equal('1134f95ea84a3dcc67d7d1bf41390ee1a03af6d2',
+    assert_equal('3e1d87f3399fc73ae5683e106bce1b5ba823fc50',
                  LineCache::sha1(test_file))
   end
 

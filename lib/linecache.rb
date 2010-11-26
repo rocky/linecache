@@ -58,21 +58,22 @@
 # and never destroys SCRIPT_LINES__
 SCRIPT_LINES__ = {} unless defined? SCRIPT_LINES__
 
+require 'tempfile'
 require 'digest/sha1'
 require 'set'
 require_relative 'tracelines'
 
-# require 'ruby-debug' ; Debugger.start
-
 # = module LineCache
 # A module to read and cache lines of a Ruby program. 
 module LineCache
+  VERSION = '0.45.git'
   LineCacheInfo = Struct.new(:stat, :line_numbers, :lines, :path, :sha1) unless
     defined?(LineCacheInfo)
  
   # The file cache. The key is a name as would be given by Ruby for 
   # __FILE__. The value is a LineCacheInfo object. 
   @@file_cache = {} 
+  @@script_cache = {} 
   
   # Maps a string filename (a String) to a key in @@file_cache (a
   # String).
@@ -88,12 +89,29 @@ module LineCache
   # ranges. Will probably use this for that, but I'm not sure.
   @@file2file_remap = {} 
   @@file2file_remap_lines = {}
+
+  @@script2file = {} 
+
+  def remove_script_temps
+    @@script2file.values.each do |filename|
+      File.unlink(filename)
+    end
+  end
+  module_function :remove_script_temps
+  at_exit { remove_script_temps }
+
   
   # Clear the file cache entirely.
   def clear_file_cache()
     @@file_cache = {}
     @@file2file_remap = {}
     @@file2file_remap_lines = {}
+  end
+  module_function :clear_file_cache
+
+  # Clear the script cache entirely.
+  def clear_script_cache()
+    @@script_cache = {}
   end
   module_function :clear_file_cache
 
@@ -228,7 +246,7 @@ module LineCache
   module_function :remap_file
 
   def remap_file_lines(from_file, to_file, range, start)
-    range = (range..range) if range.is_a?(Fixnum)
+    range = (range..range) if range.kind_of?(Fixnum)
     to_file = from_file unless to_file
     if @@file2file_remap_lines[to_file] 
       # FIXME: need to check for overwriting ranges: whether
@@ -248,7 +266,7 @@ module LineCache
       @@file_cache[filename].sha1
     sha1 = Digest::SHA1.new
     @@file_cache[filename].lines.each do |line|
-      sha1 << line
+      sha1 << line + "\n"
     end
     @@file_cache[filename].sha1 = sha1
     sha1.hexdigest
@@ -363,7 +381,6 @@ module LineCache
   end
 
   module_function :update_cache
-
 end
 
 # example usage

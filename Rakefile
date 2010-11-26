@@ -7,7 +7,7 @@ require 'rake/testtask'
 require 'fileutils'
 
 ROOT_DIR = File.dirname(__FILE__)
-require File.join(ROOT_DIR, '/lib/version')
+require File.join %W(#{ROOT_DIR} lib linecache)
 
 def gemspec
   @gemspec ||= eval(File.read('.gemspec'), binding, '.gemspec')

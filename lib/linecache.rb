@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # $Id$
 # 
-#   Copyright (C) 2007, 2008 Rocky Bernstein <rockyb@rubyforge.net>
+#   Copyright (C) 2007, 2008, 2010 Rocky Bernstein <rockyb@rubyforge.net>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -248,7 +248,7 @@ module LineCache
       @@file_cache[filename].sha1
     sha1 = Digest::SHA1.new
     @@file_cache[filename].lines.each do |line|
-      sha1 << line
+      sha1 << line + "\n"
     end
     @@file_cache[filename].sha1 = sha1
     sha1.hexdigest

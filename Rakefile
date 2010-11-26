@@ -89,7 +89,7 @@ EOF
 end
 
 # Rake task to build the default package
-  Rake::GemPackageTask.new(default_spec) do |pkg|
+Rake::GemPackageTask.new(default_spec) do |pkg|
   pkg.need_tar = true
 end
 

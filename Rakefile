@@ -7,10 +7,10 @@ require 'rake/testtask'
 
 SO_NAME = "trace_nums.so"
 
-# ------- Default Package ----------
-PKG_VERSION = open(File.join(File.dirname(__FILE__), 'VERSION')) do 
-  |f| f.readlines[0].chomp
-end
+ROOT_DIR = File.dirname(__FILE__)
+require File.join %W(#{ROOT_DIR} lib linecache)
+
+PKG_VERSION = LineCache::VERSION
 PKG_NAME           = 'linecache'
 PKG_FILE_NAME      = "#{PKG_NAME}-#{PKG_VERSION}"
 RUBY_FORGE_PROJECT = 'rocky-hacks'
@@ -57,6 +57,8 @@ task :ChangeLog do
   system("svn2cl --authors=svn2cl_usermap")
 end
 
+gem_file = nil
+
 # Base GEM Specification
 default_spec = Gem::Specification.new do |spec|
   spec.name = "linecache"
@@ -86,6 +88,8 @@ EOF
   spec.extra_rdoc_files = ['README', 'lib/linecache.rb', 'lib/tracelines.rb']
 
   spec.test_files = FileList['test/*.rb']
+  gem_file = "#{spec.name}-#{spec.version}.gem"
+
 end
 
 # Rake task to build the default package
@@ -164,3 +168,11 @@ task :rubyforge_upload do
   puts release_command
   system(release_command)
 end
+
+desc "Install the gem locally"
+task :install => :gem do
+  Dir.chdir(ROOT_DIR) do
+    sh %{gem install --local pkg/#{gem_file}}
+  end
+end
+

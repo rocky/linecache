@@ -3,8 +3,8 @@
 require 'rake'
 require 'rubygems' unless 
   Object.const_defined?(:Gem)
-require File.dirname(__FILE__) + "/lib/version" unless 
-  Object.const_defined?(:'LineCache')
+require File.dirname(__FILE__) + "/lib/linecache" unless 
+  Object.const_defined?(:LineCache)
 
 FILES = FileList[
   'AUTHORS',
@@ -38,7 +38,7 @@ EOF
   spec.license      = 'GPL2'
   spec.platform     = Gem::Platform::RUBY
   spec.require_path = 'lib'
-  spec.required_ruby_version = '= 1.9.2'
+  spec.required_ruby_version = '~> 1.9.2'
   spec.rubyforge_project = 'columnize'
   spec.summary      = 'Module to format an Array as an Array of String aligned in columns'
   spec.version      = LineCache::VERSION

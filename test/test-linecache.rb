@@ -150,4 +150,20 @@ class TestLineCache < Test::Unit::TestCase
                  LineCache::sha1(test_file))
   end
 
+  def test_iseq_cache
+    require 'thread_frame'
+    template = "x=1
+y=2
+LineCache::getline(RubyVM::ThreadFrame.current.iseq, %d)"
+    assert_equal("x=1", eval(template % 1))
+    assert_equal("y=2", eval(template % 2))
+    string = "a = 1
+b = 2
+LineCache::map_iseq(RubyVM::ThreadFrame.current.iseq)"
+    temp_filename = eval(string)
+    got_lines = File.open(temp_filename).readlines.join('')
+    assert_equal(string, got_lines.chomp)
+    assert_equal(1, File.unlink(temp_filename))
+  end
+
 end

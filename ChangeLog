@@ -1,3 +1,42 @@
+2010-11-26 04:27  Rocky Bernstein
+
+	* .gemspec: Don't use lib/version.rb any more. Also rvm lists Ruby
+	  as 1.9.2-nframe no just 1.9.2.
+
+2010-11-26 02:23  Rocky Bernstein
+
+	* lib/linecache.rb: Work more on iseq caching.
+
+2010-11-26 02:01  Rocky Bernstein
+
+	* Rakefile, lib/linecache.rb, lib/version.rb,
+	  test/test-linecache.rb: Pick up version from LineCache module.
+	  Include "\n" in sha1 calculation. Start work on iseq caching.
+
+2010-09-22 17:00  Rocky Bernstein
+
+	* Rakefile: Correct suspicious test task so it doesn't modify
+	  itself.
+
+2010-09-21 21:12  Rocky Bernstein
+
+	* .gemspec, Rakefile: Title on RDOC referred to wrong package
+
+2010-09-21 04:13  Rocky Bernstein
+
+	* .gemspec: Testing for wrong constant.
+
+2010-09-21 00:47  Rocky Bernstein
+
+	* Rakefile: Small tweaks to Rakefile building on previous stuff
+
+2010-09-20 23:13  Rocky Bernstein
+
+	* .gemspec, ChangeLog, Makefile, Rakefile, VERSION, lib/Makefile,
+	  lib/linecache.rb, lib/version.rb: Administrivia: Add gemspec
+	  file, simplify Rakefile. Add Makefile for compatibility for us
+	  old farts.
+
 2010-09-13 14:49  Rocky Bernstein
 
 	* ChangeLog, NEWS, Rakefile, VERSION: Update description for

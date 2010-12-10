@@ -1,3 +1,9 @@
+tf-0.45
+Dec 10, 2010  Phel. Mad. Release
+- Work on iseq caching.
+- Include "\n"'s in SHA1 calculations.
+- Correct suspicious test task so it doesn't modify iteslf.
+
 tf-0.44
 Sept 13, 2010
 - First 1.9.2 release via rb-threadframe

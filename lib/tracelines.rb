@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # $Id$
-#   Copyright (C) 2007, 2008, 2009 Rocky Bernstein <rockyb@rubyforge.net>
+#   Copyright (C) 2007, 2008, 2009, 2010 
+#   Rocky Bernstein <rockyb@rubyforge.net>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,8 +21,8 @@ require 'thread_frame'
 
 module TraceLineNumbers
 
-  def lnums_for_iseq(iseq, uniq=true)
-    lnums = iseq.child_iseqs.map { |iseq|
+  def lnums_for_iseq(orig_iseq, uniq=true)
+    lnums = orig_iseq.child_iseqs.map { |iseq|
       iseq.offsetlines.values.flatten
     }.flatten.sort
     uniq ? lnums.uniq : lnums

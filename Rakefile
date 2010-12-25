@@ -1,9 +1,9 @@
 #!/usr/bin/env rake
 # Are we Rubinius 1.1.1 or 1.2? 
-raise RuntimeError, 'This package is for rubinius only! (1.1.1 or 1.2)' unless
+raise RuntimeError, 'This package is for Rubinius only! (1.2, 1.2.1dev)' unless
   Object.constants.include?('Rubinius') && 
   Rubinius.constants.include?('VM') && 
-  %w(1.1.1 1.2).member?(Rubinius::VERSION)
+  %w(1.2 1.2.1dev).member?(Rubinius::VERSION)
 
 require 'rubygems'
 require 'rake/gempackagetask'

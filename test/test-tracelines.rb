@@ -16,7 +16,7 @@ class TestLineNumbers1 < Test::Unit::TestCase
   #   first_line = fp.readline[1..-2]
   #   @@rcov_lnums = eval(first_line, binding, __FILE__, __LINE__)
   # }
-  @@rcov_lnums = [3, 5, 7, 10]
+  @@rcov_lnums = [3, 7, 8]
 
   def test_for_file
     rcov_lines = TraceLineNumbers.lnums_for_file(@@rcov_file)
@@ -26,7 +26,7 @@ class TestLineNumbers1 < Test::Unit::TestCase
   def test_for_string
     string = "# Some rcov bugs.\nz = \"\nNow is the time\n\"\n\nz =~ \n     /\n      5\n     /ix\n"
     rcov_lines = TraceLineNumbers.lnums_for_str(string)
-    check = [2, 4, 6, 9]
+    check = [2, 6, 7]
     # check = [2, 9]
     assert_equal(check, rcov_lines)
   end

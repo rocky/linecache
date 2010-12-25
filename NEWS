@@ -1,3 +1,6 @@
+December 25 2010
+- Handle Rubinius eval_source to temp file remapping.
+
 October 27 2010
 - First gemcutter rubinius release 
 

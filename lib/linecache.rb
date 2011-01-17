@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
-#   Copyright (C) 2007, 2008, 2010 Rocky Bernstein <rockyb@rubyforge.net>
+#   Copyright (C) 2007, 2008, 2010, 2011
+#     Rocky Bernstein <rockyb@rubyforge.net>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -71,6 +72,10 @@ module LineCache
   # __FILE__. The value is a LineCacheInfo object. 
   @@file_cache = {} 
   @@script_cache = {} 
+
+
+  # Used for CodeRay syntax highlighting
+  @@ruby_highlighter = nil
   
   # Maps a string filename (a String) to a key in @@file_cache (a
   # String).
@@ -89,34 +94,41 @@ module LineCache
 
   @@script2file = {} 
 
+  module_function
+
   def remove_script_temps
     @@script2file.values.each do |filename|
-      File.unlink(filename)
+      begin
+        File.unlink(filename)
+      rescue
+      end
     end
   end
-  module_function :remove_script_temps
   at_exit { remove_script_temps }
 
   
   # Clear the file cache entirely.
-  def clear_file_cache()
-    @@file_cache = {}
-    @@file2file_remap = {}
-    @@file2file_remap_lines = {}
+  def clear_file_cache(filename=nil)
+    if filename 
+      if @@file_cache[filename]
+        @@file_cache.delete(filename)
+      end
+    else
+      @@file_cache = {}
+      @@file2file_remap = {}
+      @@file2file_remap_lines = {}
+    end
   end
-  module_function :clear_file_cache
 
   # Clear the script cache entirely.
   def clear_script_cache()
     @@script_cache = {}
   end
-  module_function :clear_file_cache
 
   # Return an array of cached file names
   def cached_files()
     @@file_cache.keys
   end
-  module_function :cached_files
 
   # Discard cache entries that are out of date. If +filename+ is +nil+
   # all entries in the file cache +@@file_cache+ are checked.
@@ -124,7 +136,7 @@ module LineCache
   # if the file was read from __SCRIPT_LINES but no corresponding file
   # is found, it will be kept. Return a list of invalidated filenames.
   # nil is returned if a filename was given but not found cached.
-  def checkcache(filename=nil, use_script_lines=false)
+  def checkcache(filename=nil, opts={})
     
     if !filename
       filenames = @@file_cache.keys()
@@ -145,26 +157,24 @@ module LineCache
           if stat && 
               (cache_info.size != stat.size or cache_info.mtime != stat.mtime)
             result << filename
-            update_cache(filename, use_script_lines)
+            update_cache(filename, opts)
           end
         else
           result << filename
-          update_cache(filename, use_script_lines)
+          update_cache(filename, opts)
         end
       end
     end
     return result
   end
-  module_function :checkcache
 
   # Cache script if it's not already cached.
-  def cache_script(script, string=nil, sha1=nil)
+  def cache_script(script, opts={})
     if !@@script_cache.member?(script)
-      update_script_cache(script, string, sha1)
+      update_script_cache(script, opts)
     end
     script
   end
-  module_function :cache_script
 
   # Cache file name or script object if it's not already cached.
   # Return the expanded filename for it in the cache if a filename,
@@ -176,16 +186,16 @@ module LineCache
       cache_script(file_or_script)
     end
   end
-  module_function :cache
 
   # Cache filename if it's not already cached.
   # Return the expanded filename for it in the cache
   # or nil if we can't find the file.
-  def cache_file(filename, reload_on_change=false)
+  def cache_file(filename, reload_on_change=false, opts={})
     if @@file_cache.member?(filename)
       checkcache(filename) if reload_on_change
     else
-      update_cache(filename, true)
+      opts[:use_script_lines] = true
+      update_cache(filename, opts)
     end
     if @@file_cache.member?(filename)
       @@file_cache[filename].path
@@ -193,7 +203,6 @@ module LineCache
       nil
     end
   end
-  module_function :cache_file
       
   # Return true if file_or_script is cached
   def cached?(file_or_script)
@@ -203,18 +212,15 @@ module LineCache
       cached_script?(file_or_script)
     end
   end
-  module_function :cached?
 
   def cached_script?(script)
       @@script_cache.member?(script)
   end
-  module_function :cached_script?
       
   def empty?(filename)
     filename=map_file(filename)
     @@file_cache[filename].lines.empty?
   end
-  module_function :empty?
 
   # Get line +line_number+ from file named +filename+. Return nil if
   # there was a problem. If a file named filename is not found, the
@@ -227,12 +233,12 @@ module LineCache
   #  $: << '/tmp'
   #  lines = LineCache.getlines('myfile.rb')
   #
-  def getline(file_or_script, line_number, reload_on_change=true)
+  def getline(file_or_script, line_number, opts={})
     lines = 
       if file_or_script.kind_of?(String)
         filename = map_file(file_or_script)
         filename, line_number = map_file_line(filename, line_number)
-        getlines(filename, reload_on_change)
+        getlines(filename, opts)
       else
         script_getlines(file_or_script)
       end
@@ -242,16 +248,15 @@ module LineCache
         return nil
     end
   end
-  module_function :getline
 
   # Read lines of +script+ and cache the results. However +script+ was
   # previously cached use the results from the cache. Return nil
   # if we can't get lines
-  def script_getlines(script)
+  def script_getlines(script, opts={})
     if @@script_cache.member?(script)
       return @@script_cache[script].lines
     else
-      update_script_cache(script)
+      update_script_cache(script, opts)
       if @@script_cache.member?(script)
         return @@script_cache[script].lines 
       else
@@ -259,18 +264,18 @@ module LineCache
       end
     end
   end
-  module_function :script_getlines
 
   # Read lines of +filename+ and cache the results. However +filename+ was
   # previously cached use the results from the cache. Return nil
   # if we can't get lines
-  def getlines(filename, reload_on_change=false)
+  def getlines(filename, reload_on_change=false, opts={})
     filename = map_file(filename)
     checkcache(filename) if reload_on_change
     if @@file_cache.member?(filename)
       return @@file_cache[filename].lines
     else
-      update_cache(filename, true)
+      opts[:use_script_lines] = true
+      update_cache(filename, opts)
       if @@file_cache.member?(filename)
         return @@file_cache[filename].lines 
       else
@@ -278,7 +283,18 @@ module LineCache
       end
     end
   end
-  module_function :getlines
+
+  def highlight_string(string, output_type)
+    require 'rubygems'
+    begin
+      require 'coderay'
+      require 'term/ansicolor'
+    rescue LoadError
+      return string
+    end
+    @@ruby_highlighter ||= CodeRay::Duo[:ruby, output_type]
+    @@ruby_highlighter.encode(string)
+  end
 
   # Return full filename path for filename
   def path(filename)
@@ -287,7 +303,6 @@ module LineCache
     return nil unless @@file_cache.member?(filename)
     @@file_cache[filename].path
   end
-  module_function :path
 
   def remap_file(to_file, from_file)
     @@file2file_remap[to_file] = from_file
@@ -320,7 +335,6 @@ module LineCache
     @@file_cache[filename].sha1 = sha1
     sha1.hexdigest
   end
-  module_function :sha1
       
   # Return the number of lines in filename
   def size(file_or_script)
@@ -334,7 +348,6 @@ module LineCache
       @@script_cache[file_or_script].lines.length
     end
   end
-  module_function :size
 
   # Return File.stat in the cache for filename.
   def stat(filename)
@@ -358,12 +371,10 @@ module LineCache
     end
     e.line_numbers
   end
-  module_function :trace_line_numbers
     
   def map_file(file)
     @@file2file_remap[file] ? @@file2file_remap[file] : file
   end
-  module_function :map_file
 
   def map_script(script)
     if @@script2file[script] 
@@ -377,12 +388,10 @@ module LineCache
       tempfile = Tempfile.new(["eval-#{sha1.hexdigest[0...7]}-", '.rb'])
       tempfile.open.puts(string)
       tempfile.close
-      # cache_script(script, string, sha1.hexdigest)
       @@script2file[script] = tempfile.path
       tempfile.path
     end
   end
-  module_function :map_script
 
   def map_file_line(file, line)
     if @@file2file_remap_lines[file]
@@ -395,30 +404,28 @@ module LineCache
     end
     return [map_file(file), line]
   end
-  module_function :map_file_line
 
   def script_is_eval?(script)
     !!script.eval_source
   end
-  module_function :script_is_eval?
 
   # Update a cache entry.  If something is wrong, return nil. Return
   # true if the cache was updated and false if not. 
-  def update_script_cache(script, string=nil, sha1=nil)
+  def update_script_cache(script, opts)
     return false unless script_is_eval?(script)
-    string = script.eval_source unless string
+    string = opts[:string] || script.eval_source
+    string = highlight_string(string, opts[:output]) if opts[:output] 
+
     @@script_cache[script] = 
-      LineCacheInfo.new(nil, nil, string.split(/\n/), nil, sha1)
+      LineCacheInfo.new(nil, nil, string.split(/\n/), nil, opts[:sha1])
     return true
   end
-  module_function :update_script_cache
 
-  # Update a cache entry.  If something's
-  # wrong, return nil. Return true if the cache was updated and false
-  # if not.  If use_script_lines is true, use that as the source for the
+  # Update a cache entry.  If something's wrong, return nil. Return
+  # true if the cache was updated and false if not.  If
+  # opts[:use_script_lines] is true, use that as the source for the
   # lines of the file
-  def update_cache(filename, use_script_lines=false)
-
+  def update_cache(filename, opts={})
     return nil unless filename
 
     @@file_cache.delete(filename)
@@ -440,7 +447,12 @@ module LineCache
     end
     begin
       fp = File.open(path, 'r')
-      lines = fp.readlines()
+      lines = 
+        if opts[:output]
+          highlight_string(fp.read, opts[:output]).split(/\n/)
+        else
+          fp.readlines()
+        end
       fp.close()
     rescue 
       ##  print '*** cannot open', path, ':', msg
@@ -451,7 +463,6 @@ module LineCache
     @@file2file_remap[path] = filename
     return true
   end
-
   module_function :update_cache
 end
 
@@ -495,4 +506,13 @@ if __FILE__ == $0
   puts LineCache::size(loc.static_scope.script)")
   eval("loc = Rubinius::VM::backtrace(0)[0]
   puts LineCache::map_script(loc.static_scope.script)")
+
+  # Try new ANSI Terminal syntax coloring
+  LineCache::clear_file_cache(__FILE__)
+  LineCache::update_cache(__FILE__, :output => :term)
+  50.upto(60) do |i|
+    line = LineCache::getline(__FILE__, i, :output => :term)
+    # puts line.inspect
+    puts line
+  end
 end

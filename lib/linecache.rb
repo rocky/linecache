@@ -268,9 +268,9 @@ module LineCache
   # Read lines of +filename+ and cache the results. However +filename+ was
   # previously cached use the results from the cache. Return nil
   # if we can't get lines
-  def getlines(filename, reload_on_change=false, opts={})
+  def getlines(filename, opts={})
     filename = map_file(filename)
-    checkcache(filename) if reload_on_change
+    checkcache(filename) if opts[:reload_on_change]
     if @@file_cache.member?(filename)
       return @@file_cache[filename].lines
     else
@@ -307,7 +307,6 @@ module LineCache
   def remap_file(to_file, from_file)
     @@file2file_remap[to_file] = from_file
   end
-  module_function :remap_file
 
   def remap_file_lines(from_file, to_file, range, start)
     range = (range..range) if range.kind_of?(Fixnum)

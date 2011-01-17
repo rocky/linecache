@@ -98,10 +98,7 @@ module LineCache
 
   def remove_script_temps
     @@script2file.values.each do |filename|
-      begin
-        File.unlink(filename)
-      rescue
-      end
+      File.unlink(filename) if File.exist?(filename)
     end
   end
   at_exit { remove_script_temps }
@@ -219,7 +216,7 @@ module LineCache
       
   def empty?(filename)
     filename=map_file(filename)
-    @@file_cache[filename].lines.empty?
+    @@file_cache[filename].lines[:plain].empty?
   end
 
   # Get line +line_number+ from file named +filename+. Return nil if
@@ -253,15 +250,23 @@ module LineCache
   # previously cached use the results from the cache. Return nil
   # if we can't get lines
   def script_getlines(script, opts={})
-    if @@script_cache.member?(script)
-      return @@script_cache[script].lines
-    else
-      update_script_cache(script, opts)
+    format = opts[:output] || :plain
+    line_formats = 
       if @@script_cache.member?(script)
-        return @@script_cache[script].lines 
+        @@script_cache[script].lines
       else
-        return nil
+        update_script_cache(script, opts)
+        if @@script_cache.member?(script)
+          @@script_cache[script].lines
+        else
+          nil
+        end
       end
+    return nil unless line_formats
+    if format != :plain && line_formats[format].empty?
+      highlight_string(line_formats[:plain].join("\n")).split(/\n/)
+    else
+      line_formats[format]
     end
   end
 
@@ -271,13 +276,14 @@ module LineCache
   def getlines(filename, opts={})
     filename = map_file(filename)
     checkcache(filename) if opts[:reload_on_change]
+    format = opts[:output] || :plain
     if @@file_cache.member?(filename)
-      return @@file_cache[filename].lines
+      return @@file_cache[filename].lines[format]
     else
       opts[:use_script_lines] = true
       update_cache(filename, opts)
       if @@file_cache.member?(filename)
-        return @@file_cache[filename].lines 
+        return @@file_cache[filename].lines[format]
       else
         return nil
       end
@@ -328,7 +334,7 @@ module LineCache
     return @@file_cache[filename].sha1.hexdigest if 
       @@file_cache[filename].sha1
     sha1 = Digest::SHA1.new
-    @@file_cache[filename].lines.each do |line|
+    @@file_cache[filename].lines[:plain].each do |line|
       sha1 << line + "\n"
     end
     @@file_cache[filename].sha1 = sha1
@@ -341,10 +347,10 @@ module LineCache
     if file_or_script.kind_of?(String)
       file_or_script = map_file(file_or_script)
       return nil unless @@file_cache.member?(file_or_script)
-      @@file_cache[file_or_script].lines.length
+      @@file_cache[file_or_script].lines[:plain].length
     else
       return nil unless @@script_cache.member?(file_or_script)
-      @@script_cache[file_or_script].lines.length
+      @@script_cache[file_or_script].lines[:plain].length
     end
   end
 
@@ -365,7 +371,7 @@ module LineCache
     e = @@file_cache[filename]
     unless e.line_numbers
       e.line_numbers = 
-        TraceLineNumbers.lnums_for_str_array(e.lines)
+        TraceLineNumbers.lnums_for_str_array(e.lines[:plain])
       e.line_numbers = false unless e.line_numbers
     end
     e.line_numbers
@@ -413,10 +419,11 @@ module LineCache
   def update_script_cache(script, opts)
     return false unless script_is_eval?(script)
     string = opts[:string] || script.eval_source
-    string = highlight_string(string, opts[:output]) if opts[:output] 
-
+    lines = {:plain => string.split(/\n/)}
+    lines[opts[:output]] = highlight_string(string, opts[:output]) if
+      opts[:output]
     @@script_cache[script] = 
-      LineCacheInfo.new(nil, nil, string.split(/\n/), nil, opts[:sha1])
+      LineCacheInfo.new(nil, nil, lines, nil, opts[:sha1])
     return true
   end
 
@@ -446,13 +453,13 @@ module LineCache
     end
     begin
       fp = File.open(path, 'r')
-      lines = 
-        if opts[:output]
-          highlight_string(fp.read, opts[:output]).split(/\n/)
-        else
-          fp.readlines()
-        end
+      raw_string = fp.read
+      fp.rewind
+      lines = {:plain => fp.readlines}
       fp.close()
+      lines[opts[:output]] = 
+        highlight_string(raw_string, opts[:output]).split(/\n/) if 
+        opts[:output]
     rescue 
       ##  print '*** cannot open', path, ':', msg
       return nil
@@ -462,7 +469,6 @@ module LineCache
     @@file2file_remap[path] = filename
     return true
   end
-  module_function :update_cache
 end
 
 # example usage
@@ -511,6 +517,12 @@ if __FILE__ == $0
   LineCache::update_cache(__FILE__, :output => :term)
   50.upto(60) do |i|
     line = LineCache::getline(__FILE__, i, :output => :term)
+    # puts line.inspect
+    puts line
+  end
+  puts '-' * 20
+  50.upto(60) do |i|
+    line = LineCache::getline(__FILE__, i)
     # puts line.inspect
     puts line
   end

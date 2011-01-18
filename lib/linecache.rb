@@ -117,6 +117,19 @@ module LineCache
     end
   end
 
+  # Remove syntax-formatted lines in the cache. Use this
+  # when you change the CodeRay syntax or Token formatting
+  # and want to redo how files may have previously been 
+  # syntax marked.
+  def clear_file_format_cache
+    @@file_cache.each_pair do |fname, cache_info|
+      cache_info.lines.each_pair do |format, lines|
+        next if :plain == format
+        lines = nil
+      end
+    end
+  end
+
   # Clear the script cache entirely.
   def clear_script_cache()
     @@script_cache = {}
@@ -216,7 +229,7 @@ module LineCache
       
   def empty?(filename)
     filename=map_file(filename)
-    @@file_cache[filename].lines[:plain].empty?
+    !!@@file_cache[filename].lines[:plain]
   end
 
   # Get line +line_number+ from file named +filename+. Return nil if
@@ -263,7 +276,7 @@ module LineCache
         end
       end
     return nil unless line_formats
-    if format != :plain && line_formats[format].empty?
+    if format != :plain && !line_formats[format]
       highlight_string(line_formats[:plain].join("\n")).split(/\n/)
     else
       line_formats[format]
@@ -278,7 +291,12 @@ module LineCache
     checkcache(filename) if opts[:reload_on_change]
     format = opts[:output] || :plain
     if @@file_cache.member?(filename)
-      return @@file_cache[filename].lines[format]
+      lines = @@file_cache[filename].lines
+      if opts[:output] && !lines[format]
+        lines[format] = 
+          highlight_string(lines[:plain].join("\n"), format).split(/\n/)
+      end
+      return lines[format]
     else
       opts[:use_script_lines] = true
       update_cache(filename, opts)

@@ -125,7 +125,7 @@ module LineCache
     @@file_cache.each_pair do |fname, cache_info|
       cache_info.lines.each_pair do |format, lines|
         next if :plain == format
-        lines = nil
+        @@file_cache[fname].lines[format] = nil
       end
     end
   end
@@ -147,7 +147,7 @@ module LineCache
   # is found, it will be kept. Return a list of invalidated filenames.
   # nil is returned if a filename was given but not found cached.
   def checkcache(filename=nil, opts={})
-    
+
     if !filename
       filenames = @@file_cache.keys()
     elsif @@file_cache.member?(filename)
@@ -277,7 +277,7 @@ module LineCache
       end
     return nil unless line_formats
     if format != :plain && !line_formats[format]
-      highlight_string(line_formats[:plain].join("\n")).split(/\n/)
+      highlight_string(line_formats[:plain].join('')).split(/\n/)
     else
       line_formats[format]
     end
@@ -294,7 +294,7 @@ module LineCache
       lines = @@file_cache[filename].lines
       if opts[:output] && !lines[format]
         lines[format] = 
-          highlight_string(lines[:plain].join("\n"), format).split(/\n/)
+          highlight_string(lines[:plain].join(''), format).split(/\n/)
       end
       return lines[format]
     else

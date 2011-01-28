@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
-#   Copyright (C) 2007, 2008, 2009, 2010 Rocky Bernstein <rockyb@rubyforge.net>
+#   Copyright (C) 2007, 2008, 2009, 2010, 2011 Rocky Bernstein 
+#   <rockyb@rubyforge.net>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -66,7 +67,7 @@ require_relative 'tracelines'
 # = module LineCache
 # A module to read and cache lines of a Ruby program. 
 module LineCache
-  VERSION = '0.46.dev'
+  VERSION = '1.0.dev'
   LineCacheInfo = Struct.new(:stat, :line_numbers, :lines, :path, :sha1) unless
     defined?(LineCacheInfo)
  
@@ -75,6 +76,9 @@ module LineCache
   @@file_cache = {} 
   @@iseq_cache = {} 
   
+  # Used for CodeRay syntax highlighting
+  @@ruby_highlighter = nil
+
   # Maps a string filename (a String) to a key in @@file_cache (a
   # String).
   #
@@ -92,22 +96,41 @@ module LineCache
 
   @@iseq2file = {} 
 
+  module_function
+
   def remove_iseq_temps
     @@iseq2file.values.each do |filename|
-      File.unlink(filename)
+      File.unlink(filename) if File.exist?(filename)
     end
   end
-  module_function :remove_iseq_temps
   at_exit { remove_iseq_temps }
 
   
-  # Clear the file cache entirely.
-  def clear_file_cache()
-    @@file_cache = {}
-    @@file2file_remap = {}
-    @@file2file_remap_lines = {}
+  # Remove syntax-formatted lines in the cache. Use this
+  # when you change the CodeRay syntax or Token formatting
+  # and want to redo how files may have previously been 
+  # syntax marked.
+  def clear_file_format_cache
+    @@file_cache.each_pair do |fname, cache_info|
+      cache_info.lines.each_pair do |format, lines|
+        next if :plain == format
+        @@file_cache[fname].lines[format] = nil
+      end
+    end
   end
-  module_function :clear_file_cache
+
+  # Clear the file cache entirely.
+  def clear_file_cache(filename=nil)
+    if filename 
+      if @@file_cache[filename]
+        @@file_cache.delete(filename)
+      end
+    else
+      @@file_cache = {}
+      @@file2file_remap = {}
+      @@file2file_remap_lines = {}
+    end
+  end
 
   # Clear the iseq cache entirely.
   def clear_iseq_cache()
@@ -119,7 +142,6 @@ module LineCache
   def cached_files()
     @@file_cache.keys
   end
-  module_function :cached_files
 
   # Discard cache entries that are out of date. If +filename+ is +nil+
   # all entries in the file cache +@@file_cache+ are checked.
@@ -127,7 +149,7 @@ module LineCache
   # if the file was read from __SCRIPT_LINES but no corresponding file
   # is found, it will be kept. Return a list of invalidated filenames.
   # nil is returned if a filename was given but not found cached.
-  def checkcache(filename=nil, use_script_lines=false)
+  def checkcache(filename=nil, opts={})
     
     if !filename
       filenames = @@file_cache.keys()
@@ -148,26 +170,24 @@ module LineCache
           if stat && 
               (cache_info.size != stat.size or cache_info.mtime != stat.mtime)
             result << filename
-            update_cache(filename, use_script_lines)
+            update_cache(filename, opts)
           end
         else
           result << filename
-          update_cache(filename, use_script_lines)
+          update_cache(filename, opts)
         end
       end
     end
     return result
   end
-  module_function :checkcache
 
   # Cache iseq if it's not already cached.
-  def cache_iseq(iseq, string=nil, sha1=nil)
+  def cache_iseq(iseq, opts={})
     if !@@iseq_cache.member?(iseq)
-      update_iseq_cache(iseq, string, sha1)
+      update_iseq_cache(iseq, opts)
     end
     iseq
   end
-  module_function :cache_iseq
 
   # Cache file name or iseq object if it's not already cached.
   # Return the expanded filename for it in the cache if a filename,
@@ -184,11 +204,12 @@ module LineCache
   # Cache filename if it's not already cached.
   # Return the expanded filename for it in the cache
   # or nil if we can't find the file.
-  def cache_file(filename, reload_on_change=false)
+  def cache_file(filename, reload_on_change=false, opts={})
     if @@file_cache.member?(filename)
       checkcache(filename) if reload_on_change
     else
-      update_cache(filename, true)
+      opts[:use_script_lines] = true
+      update_cache(filename, opts)
     end
     if @@file_cache.member?(filename)
       @@file_cache[filename].path
@@ -196,7 +217,6 @@ module LineCache
       nil
     end
   end
-  module_function :cache_file
       
   # Return true if file_or_iseq is cached
   def cached?(file_or_iseq)
@@ -230,12 +250,12 @@ module LineCache
   #  $: << '/tmp'
   #  lines = LineCache.getlines('myfile.rb')
   #
-  def getline(file_or_iseq, line_number, reload_on_change=true)
+  def getline(file_or_iseq, line_number, opts={})
     lines = 
       if file_or_iseq.kind_of?(String)
         filename = map_file(file_or_iseq)
         filename, line_number = map_file_line(filename, line_number)
-        getlines(filename, reload_on_change)
+        getlines(filename, opts)
       else
         iseq_getlines(file_or_iseq)
       end
@@ -245,43 +265,68 @@ module LineCache
         return nil
     end
   end
-  module_function :getline
 
   # Read lines of +iseq+ and cache the results. However +iseq+ was
   # previously cached use the results from the cache. Return nil
   # if we can't get lines
-  def iseq_getlines(iseq)
-    if @@iseq_cache.member?(iseq)
-      return @@iseq_cache[iseq].lines
-    else
-      update_iseq_cache(iseq)
+  def iseq_getlines(iseq, opts={})
+    return nil unless iseq.kind_of? RubyVM::InstructionSequence
+    format = opts[:output] || :plain
+    line_formats = 
       if @@iseq_cache.member?(iseq)
-        return @@iseq_cache[iseq].lines 
+        @@iseq_cache[iseq].lines
       else
-        return nil
+        update_iseq_cache(iseq, opts)
+        if @@iseq_cache.member?(iseq)
+          @@iseq_cache[iseq].lines
+        else
+          nil
+        end
       end
+    return nil unless line_formats
+    if format != :plain && !line_formats[format]
+      highlight_string(line_formats[:plain].join('')).split(/\n/)
+    else
+      line_formats[format]
     end
   end
-  module_function :iseq_getlines
 
   # Read lines of +filename+ and cache the results. However +filename+ was
   # previously cached use the results from the cache. Return nil
   # if we can't get lines
-  def getlines(filename, reload_on_change=false)
+  def getlines(filename, opts={})
     filename = map_file(filename)
-    checkcache(filename) if reload_on_change
+    checkcache(filename) if opts[:reload_on_change]
+    format = opts[:output] || :plain
     if @@file_cache.member?(filename)
-      return @@file_cache[filename].lines
+      lines = @@file_cache[filename].lines
+      if opts[:output] && !lines[format]
+        lines[format] = 
+          highlight_string(lines[:plain].join(''), format).split(/\n/)
+      end
+      return lines[format]
     else
-      update_cache(filename, true)
+      opts[:use_script_lines] = true
+      update_cache(filename, opts)
       if @@file_cache.member?(filename)
-        return @@file_cache[filename].lines 
+        return @@file_cache[filename].lines[format]
       else
         return nil
       end
     end
   end
-  module_function :getlines
+
+  def highlight_string(string, output_type)
+    require 'rubygems'
+    begin
+      require 'coderay'
+      require 'term/ansicolor'
+    rescue LoadError
+      return string
+    end
+    @@ruby_highlighter ||= CodeRay::Duo[:ruby, output_type]
+    @@ruby_highlighter.encode(string)
+  end
 
   # Return full filename path for filename
   def path(filename)
@@ -290,12 +335,10 @@ module LineCache
     return nil unless @@file_cache.member?(filename)
     @@file_cache[filename].path
   end
-  module_function :path
 
   def remap_file(to_file, from_file)
     @@file2file_remap[to_file] = from_file
   end
-  module_function :remap_file
 
   def remap_file_lines(from_file, to_file, range, start)
     range = (range..range) if range.kind_of?(Fixnum)
@@ -308,7 +351,6 @@ module LineCache
       @@file2file_remap_lines[to_file]  = [[from_file, range, start]]
     end
   end
-  module_function :remap_file_lines
   
   # Return SHA1 of filename.
   def sha1(filename)
@@ -317,13 +359,12 @@ module LineCache
     return @@file_cache[filename].sha1.hexdigest if 
       @@file_cache[filename].sha1
     sha1 = Digest::SHA1.new
-    @@file_cache[filename].lines.each do |line|
+    @@file_cache[filename].lines[:plain].each do |line|
       sha1 << line + "\n"
     end
     @@file_cache[filename].sha1 = sha1
     sha1.hexdigest
   end
-  module_function :sha1
       
   # Return the number of lines in filename
   def size(file_or_iseq)
@@ -331,13 +372,13 @@ module LineCache
     if file_or_iseq.kind_of?(String)
       file_or_iseq = map_file(file_or_iseq)
       return nil unless @@file_cache.member?(file_or_iseq)
-      @@file_cache[file_or_iseq].lines.length
+      @@file_cache[file_or_iseq].lines[:plain].length
     else
       return nil unless @@iseq_cache.member?(file_or_iseq)
       @@iseq_cache[file_or_iseq].lines.length
+      @@script_cache[file_or_iseq].lines[:plain].length
     end
   end
-  module_function :size
 
   # Return File.stat in the cache for filename.
   def stat(filename)
@@ -356,17 +397,15 @@ module LineCache
     e = @@file_cache[filename]
     unless e.line_numbers
       e.line_numbers = 
-        TraceLineNumbers.lnums_for_str_array(e.lines)
+        TraceLineNumbers.lnums_for_str_array(e.lines[:plain])
       e.line_numbers = false unless e.line_numbers
     end
     e.line_numbers
   end
-  module_function :trace_line_numbers
     
   def map_file(file)
     @@file2file_remap[file] ? @@file2file_remap[file] : file
   end
-  module_function :map_file
 
   def map_iseq(iseq)
     if @@iseq2file[iseq] 
@@ -375,17 +414,15 @@ module LineCache
       # Doc says there's new takes an optional string parameter
       # But it doesn't work for me
       sha1 = Digest::SHA1.new
-      string = iseq.source
-      sha1 << iseq.source
+      string = iseq.eval_source
+      sha1 << iseq.eval_source
       tempfile = Tempfile.new(["eval-#{sha1.hexdigest[0...7]}-", '.rb'])
       tempfile.open.puts(string)
       tempfile.close
-      # cache_iseq(iseq, string, sha1.hexdigest)
       @@iseq2file[iseq] = tempfile.path
       tempfile.path
     end
   end
-  module_function :map_iseq
 
   def map_file_line(file, line)
     if @@file2file_remap_lines[file]
@@ -401,26 +438,28 @@ module LineCache
   module_function :map_file_line
 
   def iseq_is_eval?(iseq)
-    !!iseq.source
+    !!iseq.eval_source
   end
   module_function :iseq_is_eval?
 
   # Update a cache entry.  If something is wrong, return nil. Return
   # true if the cache was updated and false if not. 
-  def update_iseq_cache(iseq, string=nil, sha1=nil)
+  def update_iseq_cache(iseq, opts)
     return false unless iseq_is_eval?(iseq)
-    string = iseq.source unless string
+    string = opts[:string] || iseq.eval_source
+    lines = {:plain => string.split(/\n/)}
+    lines[opts[:output]] = highlight_string(string, opts[:output]) if
+      opts[:output]
     @@iseq_cache[iseq] = 
-      LineCacheInfo.new(nil, nil, string.split(/\n/), nil, sha1)
+      LineCacheInfo.new(nil, nil, lines, nil, opts[:sha1])
     return true
   end
-  module_function :update_iseq_cache
 
-  # Update a cache entry.  If something's
-  # wrong, return nil. Return true if the cache was updated and false
-  # if not.  If use_script_lines is true, use that as the source for the
+  # Update a cache entry.  If something's wrong, return nil. Return
+  # true if the cache was updated and false if not.  If
+  # opts[:use_script_lines] is true, use that as the source for the
   # lines of the file
-  def update_cache(filename, use_script_lines=false)
+  def update_cache(filename, opts={})
 
     return nil unless filename
 
@@ -443,8 +482,13 @@ module LineCache
     end
     begin
       fp = File.open(path, 'r')
-      lines = fp.readlines()
+      raw_string = fp.read
+      fp.rewind
+      lines = {:plain => fp.readlines}
       fp.close()
+      lines[opts[:output]] = 
+        highlight_string(raw_string, opts[:output]).split(/\n/) if 
+        opts[:output]
     rescue 
       ##  print '*** cannot open', path, ':', msg
       return nil
@@ -454,8 +498,6 @@ module LineCache
     @@file2file_remap[path] = filename
     return true
   end
-
-  module_function :update_cache
 end
 
 # example usage
@@ -493,8 +535,26 @@ if __FILE__ == $0
   puts LineCache::getline('test2', 10)
   puts "Remapped 10th line of test2 is\n#{line}" 
   require 'thread_frame'
-  puts eval("x=1
-LineCache::getline(RubyVM::ThreadFrame.current.iseq, 1)")
-  puts eval("x=2
-LineCache::getline(RubyVM::ThreadFrame.current.iseq, 2)")
+  # FIXME: there's a bug in our patches. The following lines cause a 
+  # crash in iseq_mark which looks like it is marking a bad iseq caused
+  # by the execution of the following eval's of Threadframe.current.iseq:
+ #  puts eval("x=1
+ # LineCache::getline(RubyVM::ThreadFrame.current.iseq, 1)")
+ # puts eval("x=2
+ # LineCache::getline(RubyVM::ThreadFrame.current.iseq, 2)")
+
+  # Try new ANSI Terminal syntax coloring
+  LineCache::clear_file_cache(__FILE__)
+  LineCache::update_cache(__FILE__, :output => :term)
+  50.upto(60) do |i|
+    line = LineCache::getline(__FILE__, i, :output => :term)
+    # puts line.inspect
+    puts line
+  end
+  puts '-' * 20
+  50.upto(60) do |i|
+    line = LineCache::getline(__FILE__, i)
+    # puts line.inspect
+    puts line
+  end
 end

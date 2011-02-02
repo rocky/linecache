@@ -1,3 +1,7 @@
+tf-1.0
+Feb 1, 2011
+- Add syntax highlight caching
+
 tf-0.45
 Dec 10, 2010  Phel. Mad. Release
 - Work on iseq caching.

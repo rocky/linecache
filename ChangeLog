@@ -1,3 +1,24 @@
+2011-01-28 16:21  Rocky Bernstein
+
+	* lib/linecache.rb: Start syntax highlighting.
+
+2010-12-18 23:13  Rocky Bernstein
+
+	* lib/linecache.rb: Bump version number
+
+2010-12-18 23:12  Rocky Bernstein
+
+	* lib/tracelines.rb: Remove shadowing variable warning
+
+2010-12-10 16:31  Rocky Bernstein
+
+	* ChangeLog, NEWS, lib/linecache.rb: Phel. Mad. Release
+
+2010-11-27 02:12  Rocky Bernstein
+
+	* lib/linecache.rb, test/test-linecache.rb: Add tests for new iseq
+	  caching.
+
 2010-11-26 04:27  Rocky Bernstein
 
 	* .gemspec: Don't use lib/version.rb any more. Also rvm lists Ruby

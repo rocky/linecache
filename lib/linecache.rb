@@ -67,7 +67,7 @@ require_relative 'tracelines'
 # = module LineCache
 # A module to read and cache lines of a Ruby program. 
 module LineCache
-  VERSION = '1.0.dev'
+  VERSION = '1.0'
   LineCacheInfo = Struct.new(:stat, :line_numbers, :lines, :path, :sha1) unless
     defined?(LineCacheInfo)
  
@@ -535,15 +535,12 @@ if __FILE__ == $0
   puts LineCache::getline('test2', 10)
   puts "Remapped 10th line of test2 is\n#{line}" 
   require 'thread_frame'
-  # FIXME: there's a bug in our patches. The following lines cause a 
-  # crash in iseq_mark which looks like it is marking a bad iseq caused
-  # by the execution of the following eval's of Threadframe.current.iseq:
- #  puts eval("x=1
- # LineCache::getline(RubyVM::ThreadFrame.current.iseq, 1)")
- # puts eval("x=2
- # LineCache::getline(RubyVM::ThreadFrame.current.iseq, 2)")
+  puts eval("x=1
+ LineCache::getline(RubyVM::ThreadFrame.current.iseq, 1)")
+ puts eval("x=2
+ LineCache::getline(RubyVM::ThreadFrame.current.iseq, 2)")
 
-  # Try new ANSI Terminal syntax coloring
+  # # Try new ANSI Terminal syntax coloring
   LineCache::clear_file_cache(__FILE__)
   LineCache::update_cache(__FILE__, :output => :term)
   50.upto(60) do |i|

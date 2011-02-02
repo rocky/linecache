@@ -1,3 +1,64 @@
+2011-01-18 20:02  Rocky Bernstein
+
+	* lib/linecache.rb: Was redoing highlighting incorrectly. Need to
+	  add more tests.
+
+2011-01-18 18:13  Rocky Bernstein
+
+	* lib/linecache.rb: Add routine to clear syntax-highlight cache
+
+2011-01-17 23:46  Rocky Bernstein
+
+	* lib/linecache.rb: Bump version number. We're in dev now and
+	  syntax highlighting adds incompatible (but probably not noticed)
+	  changes.
+
+2011-01-17 15:45  Rocky Bernstein
+
+	* lib/linecache.rb: More on-the-fly formatting possibilities
+
+2011-01-17 15:00  Rocky Bernstein
+
+	* lib/linecache.rb: getlines: fold reload_on_change into options
+	  hash
+
+2011-01-17 12:48  Rocky Bernstein
+
+	* lib/linecache.rb: Add syntax highlighting via CodeRay and
+	  TERM:ANSIColor (if available).
+
+2010-12-27 15:31  Rocky Bernstein
+
+	* .gemspec, Rakefile: Packaging: Probably need
+	  universal-rubinius-1.2 in gem name
+
+2010-12-25 14:27  Rocky Bernstein
+
+	* release-0.44: Tag release.
+
+2010-12-25 14:22  Rocky Bernstein
+
+	* ChangeLog, NEWS, Rakefile, lib/linecache.rb, test/data/match3.rb,
+	  test/test-linecache.rb, test/test-tracelines.rb: Revise for
+	  Rubinius 1.2 and beyond where line numbers have been improved.
+	  Get Ready for 0.44 release.
+
+2010-12-14 20:04  Rocky Bernstein
+
+	* .gemspec, Rakefile: Package now builds with package
+	  rubinius-universal in the gem name and checks for version 1.1 or
+	  1.2
+
+2010-12-14 19:37  Rocky Bernstein
+
+	* test/data/case2.rb, test/data/match3.rb: Line numbers changed a
+	  little in rubinius 1.2.
+
+2010-11-27 02:49  Rocky Bernstein
+
+	* lib/linecache.rb: Bump version number. We've added static scope
+	  since the last release.
+
 2010-11-21 01:56  Rocky Bernstein
 
 	* lib/linecache.rb, test/test-linecache.rb: Handle rubinius script

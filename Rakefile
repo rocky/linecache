@@ -37,7 +37,7 @@ desc "Test everything"
 Rake::TestTask.new(:test) do |t|
   t.libs << './lib'
   t.pattern = 'test/test-*.rb'
-  t.verbose = true
+  t.options = '--verbose' if $VERBOSE
 end
 task :test => :lib
 

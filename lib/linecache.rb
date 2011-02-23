@@ -64,7 +64,7 @@ require_relative 'tracelines'
 # = module LineCache
 # A module to read and cache lines of a Ruby program. 
 module LineCache
-  VERSION = '1.0'
+  VERSION = '1.1'
   LineCacheInfo = Struct.new(:stat, :line_numbers, :lines, :path, :sha1) unless
     defined?(LineCacheInfo)
  

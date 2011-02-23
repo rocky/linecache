@@ -1,6 +1,6 @@
-1.0
-February 1, 2011
-- Add syntax highlight caching
+1.1
+February 23, 2011
+- Minor revision to description and to tolerate all Rubinius 1.2.x versions
 
 December 25, 2010
 - Handle Rubinius eval_source to temp file remapping.

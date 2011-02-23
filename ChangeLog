@@ -1,3 +1,12 @@
+2011-02-11 21:47  Rocky Bernstein
+
+	* Rakefile: Adding --verbose to test/unit has changed over the
+	  years
+
+2011-02-02 01:16  Rocky Bernstein
+
+	* ChangeLog, NEWS, lib/linecache.rb: Get ready for release
+
 2011-01-18 20:02  Rocky Bernstein
 
 	* lib/linecache.rb: Was redoing highlighting incorrectly. Need to

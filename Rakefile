@@ -1,9 +1,10 @@
 #!/usr/bin/env rake
-# Are we Rubinius 1.1.1 or 1.2? 
-raise RuntimeError, 'This package is for Rubinius only! (1.2, 1.2.1dev)' unless
+# Are we Rubinius? We'll test by checking the specific function we need.
+raise RuntimeError, 'This package is for Rubinius 1.2.x only!' unless
   Object.constants.include?('Rubinius') && 
   Rubinius.constants.include?('VM') && 
-  %w(1.2 1.2.1dev).member?(Rubinius::VERSION)
+  Rubinius::VERSION =~ /1\.2.+/
+
 
 require 'rubygems'
 require 'rake/gempackagetask'
@@ -11,20 +12,20 @@ require 'rake/rdoctask'
 require 'rake/testtask'
 
 ROOT_DIR = File.dirname(__FILE__)
+Gemspec_filename = 'rbx-linecache.gemspec'
 require File.join %W(#{ROOT_DIR} lib linecache)
 
 def gemspec
-  @gemspec ||= eval(File.read('.gemspec'), binding, '.gemspec')
+  @gemspec ||= eval(File.read(Gemspec_filename), binding, Gemspec_filename)
 end
 
 desc "Build the gem"
 task :package=>:gem
 task :gem=>:gemspec do
   Dir.chdir(ROOT_DIR) do
-    sh "gem build .gemspec"
+    sh "gem build #{Gemspec_filename}"
     FileUtils.mkdir_p 'pkg'
-    FileUtils.mv("#{gemspec.name}-#{gemspec.version}-universal-rubinius-1.2.gem", 
-                 "pkg/#{gemspec.name}-#{gemspec.version}-universal-rubinius-1.2.gem")
+    FileUtils.mv("#{gemspec.file_name}", "pkg/")
   end
 end
 
@@ -33,7 +34,7 @@ task :default => [:test]
 desc 'Install the gem locally'
 task :install => :package do
   Dir.chdir(ROOT_DIR) do
-    sh %{gem install --local pkg/#{gemspec.name}-#{gemspec.version}}
+    sh %{gem install --local pkg/#{gemspec.file_name}}
   end
 end    
 

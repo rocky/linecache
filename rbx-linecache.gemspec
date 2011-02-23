@@ -27,9 +27,14 @@ Gem::Specification.new do |spec|
   spec.authors      = ['R. Bernstein']
   spec.date         = Time.now
   spec.description = <<-EOF
-LineCache is a module for reading and caching lines. This may be useful for
-example in a debugger where the same lines are shown many times.
+LineCache is a module for reading and caching lines. It also provides
+facility for remapping file names and line ranges within a file. If
+coderay is installed, LineCache an colorize Ruby source code.
+
+This may be useful for example in a debugger where the same lines are
+shown many times.
 EOF
+
   ## spec.add_dependency('diff-lcs') # For testing only
   spec.email        = 'rockyb@rubyforge.net'
   spec.files        = FILES.to_a  

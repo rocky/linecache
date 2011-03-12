@@ -329,8 +329,9 @@ module LineCache
     @@file_cache[filename].path
   end
 
-  def remap_file(to_file, from_file)
-    @@file2file_remap[to_file] = from_file
+  def remap_file(from_file, to_file)
+    @@file2file_remap[from_file] = to_file
+    cache_file(to_file)
   end
 
   def remap_file_lines(from_file, to_file, range, start)
@@ -447,7 +448,8 @@ module LineCache
     lines[opts[:output]] = highlight_string(string, opts[:output]) if
       opts[:output]
     @@script_cache[script] = 
-      LineCacheInfo.new(nil, nil, lines, nil, opts[:sha1])
+      LineCacheInfo.new(nil, nil, lines, nil, opts[:sha1], 
+                        opts[:compiled_method])
     return true
   end
 

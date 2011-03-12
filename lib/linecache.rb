@@ -65,7 +65,8 @@ require_relative 'tracelines'
 # A module to read and cache lines of a Ruby program. 
 module LineCache
   VERSION = '1.1'
-  LineCacheInfo = Struct.new(:stat, :line_numbers, :lines, :path, :sha1) unless
+  LineCacheInfo = Struct.new(:stat, :line_numbers, :lines, :path, 
+                             :sha1, :compiled_method) unless
     defined?(LineCacheInfo)
  
   # The file cache. The key is a name as would be given by Ruby for 
@@ -345,6 +346,11 @@ module LineCache
   end
   module_function :remap_file_lines
   
+  # Return any compiled method saved for a filename.
+  def compiled_method(filename)
+    map_file(filename).compiled_method
+  end
+
   # Return SHA1 of filename.
   def sha1(filename)
     filename = map_file(filename)
@@ -482,8 +488,9 @@ module LineCache
       ##  print '*** cannot open', path, ':', msg
       return nil
     end
-    @@file_cache[filename] = LineCacheInfo.new(File.stat(path), nil, lines,
-                                               path, nil)
+    @@file_cache[filename] = 
+      LineCacheInfo.new(File.stat(path), nil, lines, path, nil, 
+                        opts[:compiled_method])
     @@file2file_remap[path] = filename
     return true
   end

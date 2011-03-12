@@ -349,7 +349,11 @@ module LineCache
   
   # Return any compiled method saved for a filename.
   def compiled_method(filename)
-    map_file(filename).compiled_method
+    if file = map_file(filename) && @@file_cache[file]
+      return @@file_cache[file].compiled_method 
+    else
+      return nil
+    end
   end
 
   # Return SHA1 of filename.

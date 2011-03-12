@@ -349,7 +349,7 @@ module LineCache
   
   # Return any compiled method saved for a filename.
   def compiled_method(filename)
-    if file = map_file(filename) && @@file_cache[file]
+    if (file = map_file(filename)) && @@file_cache[file]
       return @@file_cache[file].compiled_method 
     else
       return nil

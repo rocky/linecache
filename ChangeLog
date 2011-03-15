@@ -1,3 +1,29 @@
+2011-03-12 12:06  Rocky Bernstein
+
+	* lib/linecache.rb: Wasn't accessing compiled_method right
+
+2011-03-12 04:21  Rocky Bernstein
+
+	* lib/linecache.rb: Compiled method fix again
+
+2011-03-12 03:29  Rocky Bernstein
+
+	* lib/linecache.rb: Save compiled method if given
+
+2011-03-12 01:02  Rocky Bernstein
+
+	* lib/linecache.rb: Add slot for a compiled method
+
+2011-02-23 14:59  Rocky Bernstein
+
+	* release-1.1: Tag Release 1.1
+
+2011-02-23 14:58  Rocky Bernstein
+
+	* .gemspec, ChangeLog, NEWS, Rakefile, lib/linecache.rb,
+	  rbx-linecache.gemspec: minor revision to description and to
+	  tolerate all Rubinius 1.2.x versions; Get ready for 1.1 release
+
 2011-02-11 21:47  Rocky Bernstein
 
 	* Rakefile: Adding --verbose to test/unit has changed over the

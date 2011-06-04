@@ -486,7 +486,7 @@ module LineCache
           raw_lines = SCRIPT_LINES__[name]
           lines = {:plain => raw_lines}
           lines[opts[:output]] =
-            highlight_string(raw_lines.join("\n"), opts[:output]).split(/\n/) if 
+            highlight_string(raw_lines.join, opts[:output]).split(/\n/) if 
             opts[:output]
           @@file_cache[filename] = LineCacheInfo.new(stat, nil, lines, path, nil)
           @@file2file_remap[path] = filename

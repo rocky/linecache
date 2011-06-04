@@ -23,7 +23,6 @@ FILES = FileList[
   'NEWS',
   'README',
   'Rakefile',
-  'VERSION',
   'ext/trace_nums.c',
   'ext/trace_nums.h',
   'ext/extconf.rb',
@@ -150,10 +149,7 @@ end
 desc "Generate rdoc documentation"
 Rake::RDocTask.new("rdoc") do |rdoc|
   rdoc.rdoc_dir = 'doc'
-  rdoc.title    = "linecache"
-  # Show source inline with line numbers
-  rdoc.options << "--inline-source" << "--line-numbers"
-  # Make the readme file the start page for the generated html
+  rdoc.title    = "linecache #{LineCache::VERSION} Documentation"
   rdoc.options << '--main' << 'README'
   rdoc.rdoc_files.include('ext/**/*.c',
                           'lib/*.rb', 

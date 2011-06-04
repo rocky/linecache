@@ -1,0 +1,353 @@
+2011-02-11 21:38  Rocky Bernstein
+
+	* Rakefile: Adding --verbose to test/unit has changed over the
+	  years
+
+2010-11-26 04:31  Rocky Bernstein
+
+	* lib/linecache.rb: 44.git -> 44.dev
+
+2010-11-26 04:29  Rocky Bernstein
+
+	* lib/linecache.rb: Doc change
+
+2010-11-26 01:39  Rocky Bernstein
+
+	* ChangeLog, Rakefile, VERSION, lib/linecache.rb: Pick up version #
+	  from LineCache module. Add Rake install target.
+
+2010-11-26 01:17  Rocky Bernstein
+
+	* lib/linecache.rb, test/test-linecache.rb: Add "\n" in calculation
+	  of sha1
+
+2010-11-26 01:05  Rocky Bernstein
+
+	* Rakefile: Indentation
+
+2010-09-29 10:57  Rocky Bernstein
+
+	* Rakefile: Remove specious use of Rake test task.
+
+2009-08-05 05:04  mark-moseley
+
+	* ext/trace_nums.c, ext/trace_nums.h: minor cleanup
+
+2009-02-09 01:16  Rocky Bernstein
+
+	* test/test-linecache.rb: Another doc typo.
+
+2009-02-08 17:19  Rocky Bernstein
+
+	* README: Update doc.
+
+2009-02-08 02:07  Rocky Bernstein
+
+	* lib/linecache.rb: Comparing wrong fields in stat comparison.
+
+2009-02-07 09:21  Rocky Bernstein
+
+	* lib/linecache.rb: Another doc typo.
+
+2009-02-07 02:31  Rocky Bernstein
+
+	* lib/linecache.rb: Add ',' to doc comment.
+
+2009-02-06 04:47  Rocky Bernstein
+
+	* ., README, lib/linecache.rb: Update documentation.
+
+2009-02-02 11:24  Rocky Bernstein
+
+	* .: Move in the right trunk. Or perhaps we'll blow out everything?
+	  Figers are crossed....
+
+2008-06-12 11:29  Rocky Bernstein
+
+	* 0.43 release - small change for MSwin32 - allow sfinding an
+	  extension in lib rather than ext.
+
+2008-06-12 00:04  Rocky Bernstein
+
+	* Look in lib as well as ext for trace_nums. Win32 puts it in lib.
+
+2008-04-11 02:54  Rocky Bernstein
+
+	* Wasn't listing extension to for C compilation?
+
+2008-04-10 20:06  Rocky Bernstein
+
+	* What's new for 0.41.
+
+2008-04-10 20:02  Rocky Bernstein
+
+	* Forgot to add test/data to the gem.
+
+2008-04-10 02:15  Rocky Bernstein
+
+	* 
+
+2008-03-28 15:04  Rocky Bernstein
+
+	* More if tests
+
+2008-03-09 23:24  Rocky Bernstein
+
+	* Deal with Depricated win32.
+
+2008-03-05 02:01  Rocky Bernstein
+
+	* Add rubyforge_upload task -- code from ruby-memory-profiler.
+
+2008-03-04 22:47  Rocky Bernstein
+
+	* Ooops - forgot to credit Ryan Davis and ParseTree.
+
+2008-02-10 13:59  Rocky Bernstein
+
+	* Go over Rakefile and doc for 0.3 release.
+
+2008-01-29 21:51  Rocky Bernstein
+
+	* Interface change. Don't know why this didn't get updated before.
+
+2008-01-28 15:35  Rocky Bernstein
+
+	* Change line number return from a Set to an Array.
+
+2008-01-27 11:24  Rocky Bernstein
+
+	* Handle defined? node. Add "if" weirdness test.
+
+2008-01-27 04:26  Rocky Bernstein
+
+	* Verify that the 'else' doesn't appear in a trace.
+
+2008-01-27 04:21  Rocky Bernstein
+
+	* Was not showing blocks after when's.
+
+2008-01-27 04:03  Rocky Bernstein
+
+	* trace_nums.c, block1.c, block2.c: bug in handling blocks
+	  lnum-diag.rb: more graceful about not finding the source.
+	  if4.rb: note weirdness in the way comparison works.
+
+2008-01-27 02:11  Rocky Bernstein
+
+	* Finish adding all tree nodes. Work on case nodes some more.
+	  lnum-diag.rb: add options to turn on and off various parts.
+
+2008-01-26 11:12  Rocky Bernstein
+
+	* Add comment test and situation where no lines traced.
+
+2008-01-26 11:08  Rocky Bernstein
+
+	* Add class, scope and module nodes.
+
+2008-01-26 10:18  Rocky Bernstein
+
+	* Add more tree nodes.
+
+2008-01-26 02:09  Rocky Bernstein
+
+	* Add Debugger.init which intializes things that rdebug does. This
+	  allows a restart even though rdebug wasn't called initially.
+
+2008-01-25 03:50  Rocky Bernstein
+
+	* Some code cleanup.
+
+2008-01-25 02:50  Rocky Bernstein
+
+	* Work over case, when and match3.
+
+2008-01-25 00:17  Rocky Bernstein
+
+	* Trace just line numbers for now until we get a better handle on
+	  things.
+
+2008-01-24 13:36  Rocky Bernstein
+
+	* Need recursion in more places because of block continuation
+	  nodes.
+	  Add nodes needed so we don't complain about rcov-bug.rb:
+	  NODE_MATCH3, NODE_LASN, and NODE_STR (and those similar to that).
+
+2008-01-24 04:09  Rocky Bernstein
+
+	* Fix bug if print_file == false
+
+2008-01-24 04:04  Rocky Bernstein
+
+	* Add more operatiors. Go over existing ones and add more tests of
+	  them.
+
+2008-01-23 19:17  Rocky Bernstein
+
+	* What's up.
+
+2008-01-23 19:12  Rocky Bernstein
+
+	* Don't assume we have expected line numbers.
+
+2008-01-23 19:05  Rocky Bernstein
+
+	* A conversion-error bug.
+
+2008-01-23 19:04  Rocky Bernstein
+
+	* variable name typo.
+
+2008-01-23 19:03  Rocky Bernstein
+
+	* lnum-diag.rb and parse-show.rb - some diagnostic tools.
+
+2008-01-23 16:06  Rocky Bernstein
+
+	* Show add_lines level, nicer formatting including \n for end.
+
+2008-01-23 15:32  Rocky Bernstein
+
+	* Generalized routine to test everything in lnum-data
+
+2008-01-23 12:07  Rocky Bernstein
+
+	* ParseTree is broken for our purposes. Having custom code for
+	  getting
+	  the trace line numbers is going remove a lot of headaches down
+	  the line.
+
+2008-01-20 21:37  Rocky Bernstein
+
+	* Add trace_line_numbers to save/get line numbers which we can set
+	  breakpoints
+	  on.
+
+2008-01-20 16:31  Rocky Bernstein
+
+	* Add module TraceLineNumbers for extracting the stoppable lines in
+	  a
+	  Ruby program.
+
+2008-01-19 15:55  Rocky Bernstein
+
+	* Allow nil to mean the same file. More tests.
+
+2008-01-19 15:45  Rocky Bernstein
+
+	* Start remap_file_lines: ability to remap file ranges.
+
+2008-01-17 22:25  Rocky Bernstein
+
+	* lines -> size. Add empty? Add remap_file.
+
+2008-01-17 20:05  Rocky Bernstein
+
+	* Add method to get the number of lines in a cached file.
+
+2008-01-17 19:42  Rocky Bernstein
+
+	* Add convenience method for testing presence in SCRIPT_LINES__.
+
+2008-01-17 07:30  Rocky Bernstein
+
+	* Add path method and test.
+
+2008-01-17 06:54  Rocky Bernstein
+
+	* Add @@full2file_cache_key. getlines wasn't returning the right
+	  value sometimes.
+	  Make return from checkcache meaningful. Change return value of
+	  upate_cache().
+	  test-linecache.rb: was testing for buggy behavior!
+	  VERSION: now in 0.3 - hope we get it right this time.
+
+2008-01-16 12:51  Rocky Bernstein
+
+	* Add cached_files.
+
+2008-01-16 01:30  Rocky Bernstein
+
+	* Update news for 0.2 release.
+
+2008-01-15 22:43  Rocky Bernstein
+
+	* Remove debug line.
+
+2008-01-15 22:42  Rocky Bernstein
+
+	* Fix some syntax errors.
+
+2008-01-15 22:40  Rocky Bernstein
+
+	* Add routine to save and get SHA1.
+
+2008-01-15 22:16  Rocky Bernstein
+
+	* Add cached? and stat methods to determine in a file is cached and
+	  get
+	  File.stat from it.
+
+2008-01-15 08:49  Rocky Bernstein
+
+	* Don't ever modify SCRIPT_LINES__. And until SCRIPT_LINES__ is
+	  fixed,
+	  don't read from it. Corrections to comments.
+
+2008-01-14 12:27  Rocky Bernstein
+
+	* Add parameter to getline and getlines to reload file on change.
+	  Add
+	  option on clear_file_cache to clear out SCRIPT_LINES__ as well.
+	  TESTS ARE NEEDED.
+	  Update to version 0.2.
+
+2008-01-14 03:41  Rocky Bernstein
+
+	* Use SCRIPT_LINES__ if we can.
+
+2007-12-10 16:24  Rocky Bernstein
+
+	* release 0.1
+
+2007-12-09 17:47  Rocky Bernstein
+
+	* lib/linecache.rb: Make Ruby 1.9 compatible.
+
+2007-12-09 17:17  Rocky Bernstein
+
+	* ChangeLog, Rakefile, lib/linecache.rb, test/test-linecache.rb:
+	  Better tests mean more bugs found. "rake" defaults now to "test".
+
+2007-12-09 14:10  Rocky Bernstein
+
+	* Rakefile: Add VERSION to gem.
+
+2007-12-09 14:09  Rocky Bernstein
+
+	* test/test-linecache.rb: Change classname to something more
+	  appropriate.
+
+2007-12-09 13:41  Rocky Bernstein
+
+	* ., Rakefile: . : ignore doc and pkg
+	  Rakefile: clean now does clobber_rdoc and clobber_package, i.e.
+	  removes
+	  the doc and pkg directories.
+
+2007-12-09 13:15  Rocky Bernstein
+
+	* ChangeLog, NEWS, README, Rakefile, lib/linecache.rb,
+	  test/test-linecache.rb: NEWS, README, linecache.rb: Add $Id$ line
+	  test-linecache.rb: make executable
+	  Rakefile: Correct documentation
+
+2007-12-09 12:58  Rocky Bernstein
+
+	* ., AUTHORS, COPYING, ChangeLog, NEWS, README, Rakefile, VERSION,
+	  lib, lib/linecache.rb, test, test/test-linecache.rb: Initial
+	  import of LineCache, a module for reading and caching lines.
+	  This time to trunk.
+

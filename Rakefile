@@ -5,7 +5,7 @@ require 'rake/gempackagetask'
 require 'rake/rdoctask'
 require 'rake/testtask'
 
-SO_NAME = "trace_nums.so"
+SO_NAME = 'trace_nums.so'
 
 ROOT_DIR = File.dirname(__FILE__)
 require File.join %W(#{ROOT_DIR} lib linecache)
@@ -32,7 +32,7 @@ FILES = FileList[
   'test/short-file'
 ]                        
 
-desc "Test everything"
+desc 'Test everything'
 Rake::TestTask.new(:test) do |t|
   t.libs << './lib'
   t.pattern = 'test/test-*.rb'
@@ -40,30 +40,30 @@ Rake::TestTask.new(:test) do |t|
 end
 task :test => :lib
 
-desc "Create the core ruby-debug shared library extension"
+desc 'Create the core ruby-debug shared library extension'
 task :lib do
-  Dir.chdir("ext") do
+  Dir.chdir('ext') do
     system("#{Gem.ruby} extconf.rb && make")
   end
 end
 
 
-desc "Test everything - same as test."
+desc 'Test everything - same as test.'
 task :check => :test
 
-desc "Create a GNU-style ChangeLog via svn2cl"
+desc 'Create a GNU-style ChangeLog via svn2cl'
 task :ChangeLog do
-  system("svn2cl --authors=svn2cl_usermap")
+  system('svn2cl --authors=svn2cl_usermap')
 end
 
 gem_file = nil
 
 # Base GEM Specification
 default_spec = Gem::Specification.new do |spec|
-  spec.name = "linecache"
+  spec.name = 'linecache'
   
-  spec.homepage = "http://rubyforge.org/projects/rocky-hacks/linecache"
-  spec.summary = "Read file with caching"
+  spec.homepage = 'http://rubyforge.org/projects/rocky-hacks/linecache'
+  spec.summary = 'Read file with caching'
   spec.description = <<-EOF
 LineCache is a module for reading and caching lines. This may be useful for
 example in a debugger where the same lines are shown many times.
@@ -71,12 +71,12 @@ EOF
 
   spec.version = PKG_VERSION
 
-  spec.author = "R. Bernstein"
-  spec.email = "rockyb@rubyforge.net"
+  spec.author = 'R. Bernstein'
+  spec.email = 'rockyb@rubyforge.net'
   spec.platform = Gem::Platform::RUBY
-  spec.require_path = "lib"
+  spec.require_path = 'lib'
   spec.files = FILES.to_a  
-  spec.extensions = ["ext/extconf.rb"]
+  spec.extensions = ['ext/extconf.rb']
 
   spec.required_ruby_version = '>= 1.8.2'
   spec.date = Time.now
@@ -105,12 +105,12 @@ win_spec.extensions = []
 win_spec.platform = 'mswin32'
 win_spec.files += ["lib/#{SO_NAME}"]
 
-desc "Create Windows Gem"
+desc 'Create Windows Gem'
 task :win32_gem do
   # Copy the win32 extension the top level directory.
   current_dir = File.expand_path(File.dirname(__FILE__))
-  source = File.join(current_dir, "ext", "win32", SO_NAME)
-  target = File.join(current_dir, "lib", SO_NAME)
+  source = File.join(current_dir, 'ext', 'win32', SO_NAME)
+  target = File.join(current_dir, 'lib', SO_NAME)
   cp(source, target)
 
   # Create the gem, then move it to pkg.
@@ -122,32 +122,43 @@ task :win32_gem do
   rm(target)
 end
 
-desc "Publish linecache to RubyForge."
+desc 'Publish linecache to RubyForge.'
 task :publish do 
   require 'rake/contrib/sshpublisher'
   
   # Get ruby-debug path.
   ruby_debug_path = File.expand_path(File.dirname(__FILE__))
 
-  publisher = Rake::SshDirPublisher.new("rockyb@rubyforge.org",
-        "/var/www/gforge-projects/rocky-hacks/linecache", ruby_debug_path)
+  publisher = Rake::SshDirPublisher.new('rockyb@rubyforge.org',
+        '/var/www/gforge-projects/rocky-hacks/linecache', ruby_debug_path)
 end
 
-desc "Remove built files"
-task :clean => [:clobber_package, :clobber_rdoc] do
-  cd "ext" do
-    if File.exists?("Makefile")
-      sh "make clean"
-      rm  "Makefile"
+desc 'Remove residue from running patch'
+task :rm_patch_residue do
+  FileUtils.rm_rf Dir.glob('**/*.{rej,orig}'), :verbose => true
+end
+
+desc 'Remove ~ backup files'
+task :rm_tilde_backups do
+  FileUtils.rm_rf Dir.glob('**/*~'), :verbose => true
+end
+
+desc 'Remove built files'
+task :clean => [:clobber_package, :clobber_rdoc, :rm_patch_residue, 
+                :rm_tilde_backups] do
+  cd 'ext' do
+    if File.exists?('Makefile')
+      sh 'make clean'
+      rm 'Makefile'
     end
-    derived_files = Dir.glob(".o") + Dir.glob("*.so")
+    derived_files = Dir.glob('.o') + Dir.glob('*.so')
     rm derived_files unless derived_files.empty?
   end
 end
 
 # ---------  RDoc Documentation ------
-desc "Generate rdoc documentation"
-Rake::RDocTask.new("rdoc") do |rdoc|
+desc 'Generate rdoc documentation'
+Rake::RDocTask.new('rdoc') do |rdoc|
   rdoc.rdoc_dir = 'doc'
   rdoc.title    = "linecache #{LineCache::VERSION} Documentation"
   rdoc.options << '--main' << 'README'
@@ -157,7 +168,7 @@ Rake::RDocTask.new("rdoc") do |rdoc|
                           'COPYING')
 end
 
-desc "Publish the release files to RubyForge."
+desc 'Publish the release files to RubyForge.'
 task :rubyforge_upload do
   `rubyforge login`
   release_command = "rubyforge add_release #{PKG_NAME} #{PKG_NAME} '#{PKG_NAME}-#{PKG_VERSION}' pkg/#{PKG_NAME}-#{PKG_VERSION}.gem"
@@ -165,7 +176,7 @@ task :rubyforge_upload do
   system(release_command)
 end
 
-desc "Install the gem locally"
+desc 'Install the gem locally'
 task :install => :gem do
   Dir.chdir(ROOT_DIR) do
     sh %{gem install --local pkg/#{gem_file}}

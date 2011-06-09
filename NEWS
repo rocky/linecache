@@ -1,3 +1,8 @@
+0.45
+06-12-11
+- Support for syntax highlighting and caching eval strings. The former
+  is used in rb8-trepanning.
+
 0.43
 06-12-08
 - tolerance for finding windows extension in lib rather than ext.

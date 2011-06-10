@@ -65,12 +65,12 @@ require 'set'
 begin require 'rubygems' rescue LoadError end
 require 'require_relative'
 require_relative 'tracelines'
+require_relative 'version'
 # require 'ruby-debug' ; Debugger.start
 
 # = module LineCache
 # A module to read and cache lines of a Ruby program. 
 module LineCache
-  VERSION = '0.45dev'
   LineCacheInfo = Struct.new(:stat, :line_numbers, :lines, :path, :sha1) unless
     defined?(LineCacheInfo)
  

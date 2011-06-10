@@ -8,7 +8,7 @@ require 'rake/testtask'
 SO_NAME = 'trace_nums.so'
 
 ROOT_DIR = File.dirname(__FILE__)
-require File.join %W(#{ROOT_DIR} lib linecache)
+load File.join %W(#{ROOT_DIR} lib version.rb)
 
 PKG_VERSION = LineCache::VERSION
 PKG_NAME           = 'linecache'

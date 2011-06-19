@@ -76,6 +76,7 @@ EOF
   spec.platform = Gem::Platform::RUBY
   spec.require_path = 'lib'
   spec.files = FILES.to_a  
+  spec.add_dependency('rbx-require-relative', '> 0.0.4')
   spec.extensions = ['ext/extconf.rb']
 
   spec.required_ruby_version = '>= 1.8.7'
@@ -104,6 +105,7 @@ win_spec.extensions = []
 ## win_spec.platform = Gem::Platform::WIN32 # deprecated
 win_spec.platform = 'mswin32'
 win_spec.files += ["lib/#{SO_NAME}"]
+win_spec.add_dependency('rbx-require-relative', '> 0.0.4')
 
 desc 'Create Windows Gem'
 task :win32_gem do

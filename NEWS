@@ -1,3 +1,8 @@
+0.46
+06-12-19
+- A require_relative dependency snuck in. 
+  Add a rbx-require-relative to handle this.
+
 0.45
 06-12-11
 - Support for syntax highlighting and caching eval strings. The former

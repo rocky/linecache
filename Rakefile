@@ -78,7 +78,7 @@ EOF
   spec.files = FILES.to_a  
   spec.extensions = ['ext/extconf.rb']
 
-  spec.required_ruby_version = '>= 1.8.2'
+  spec.required_ruby_version = '>= 1.8.7'
   spec.date = Time.now
   spec.rubyforge_project = 'rocky-hacks'
   

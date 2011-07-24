@@ -39,14 +39,14 @@ EOF
   spec.email        = 'rockyb@rubyforge.net'
   spec.files        = FILES.to_a  
   spec.has_rdoc     = true
-  spec.homepage     = 'http://wiki.github.com/rocky/rbx-trepanning'
+  spec.homepage     = "http://rubyforge.org/projects/rocky-hacks/linecache"
   spec.name         = 'rbx-linecache'
   spec.license      = 'MIT'
   spec.platform     = Gem::Platform::new ['universal', 'rubinius', '1.2']
   spec.require_path = 'lib'
   spec.required_ruby_version = '~> 1.8.7'
   spec.rubyforge_project = 'rocky-hacks'
-  spec.summary      = "Read file with caching"
+  spec.summary      = 'Module to read and cache Ruby program files and file information'
   spec.version      = LineCache::VERSION
 
   # Make the readme file the start page for the generated html

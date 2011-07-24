@@ -39,8 +39,8 @@ EOF
   spec.platform     = Gem::Platform::RUBY
   spec.require_path = 'lib'
   spec.required_ruby_version = '~> 1.9.2'
-  spec.rubyforge_project = 'columnize'
-  spec.summary      = 'Module to format an Array as an Array of String aligned in columns'
+  spec.rubyforge_project = 'rocky-hacks'
+  spec.summary      = 'Module to read and cache Ruby program files and file information'
   spec.version      = LineCache::VERSION
   spec.extra_rdoc_files = %w(README lib/linecache.rb lib/tracelines.rb)
 

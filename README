@@ -1,4 +1,4 @@
-= LineCache - A module to read and cache file information of a Ruby program.
+= LineCache - a module to read and cache Ruby program files and file information
 
 == SYNOPSIS
 

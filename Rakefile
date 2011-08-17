@@ -1,5 +1,5 @@
 #!/usr/bin/env rake
-# Are we Rubinius? We'll test by checking the specific function we need.
+# Are we Rubinius? The right versions of it? 
 raise RuntimeError, 
 'This package is for Rubinius 1.2.[34] or 2.0.x only!' unless
   Object.constants.include?('Rubinius') && 
@@ -27,7 +27,7 @@ task :gem=>:gemspec do
     FileUtils.mkdir_p 'pkg'
     FileUtils.mv("#{gemspec.file_name}", "pkg/")
 
-    # Now make a 2.0 package by changng 1.2 to 2.0 in the gemspec
+    # Now make a 2.0 package by changing 1.2 to 2.0 in the gemspec
     # and creating another gemspec and moving that accordingly
     lines = File.open(Gemspec_filename).readlines.map{|line|
       line.gsub(/'universal', 'rubinius', '1\.2'/,

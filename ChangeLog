@@ -1,3 +1,20 @@
+2011-07-24 02:39  Rocky Bernstein
+
+	* rbx-linecache.gemspec: Revise summary and home page location.
+
+2011-06-12 03:00  Rocky Bernstein
+
+	* release-0.45: Release 0.45
+
+2011-03-16 01:04  Rocky Bernstein
+
+	* release-0.1.2: Release for CompiledMethod cachiing.
+
+2011-03-15 03:45  Rocky Bernstein
+
+	* ChangeLog, NEWS, lib/linecache.rb: Get ready for release on March
+	  15th.
+
 2011-03-12 12:06  Rocky Bernstein
 
 	* lib/linecache.rb: Wasn't accessing compiled_method right

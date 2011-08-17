@@ -21,7 +21,6 @@ FILES = FileList[
   'test/short-file2'                 
 ]                        
 
-
 Gem::Specification.new do |spec|
   spec.add_dependency('rbx-require-relative')
   spec.authors      = ['R. Bernstein']
@@ -44,7 +43,7 @@ EOF
   spec.license      = 'MIT'
   spec.platform     = Gem::Platform::new ['universal', 'rubinius', '1.2']
   spec.require_path = 'lib'
-  spec.required_ruby_version = '~> 1.8.7'
+  # spec.required_ruby_version = '~> 1.8.7'
   spec.rubyforge_project = 'rocky-hacks'
   spec.summary      = 'Module to read and cache Ruby program files and file information'
   spec.version      = LineCache::VERSION

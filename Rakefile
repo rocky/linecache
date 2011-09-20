@@ -1,14 +1,14 @@
 #!/usr/bin/env rake
 # -*- Ruby -*-
 require 'rubygems'
-require 'rake/gempackagetask'
-require 'rake/rdoctask'
+require 'rubygems/package_task'
+require 'rdoc/task'
 require 'rake/testtask'
 
 SO_NAME = 'trace_nums.so'
 
 ROOT_DIR = File.dirname(__FILE__)
-load File.join %W(#{ROOT_DIR} lib version.rb)
+load File.join %W(#{ROOT_DIR} lib linecache version.rb)
 
 PKG_VERSION = LineCache::VERSION
 PKG_NAME           = 'linecache'
@@ -23,10 +23,10 @@ FILES = FileList[
   'NEWS',
   'README',
   'Rakefile',
-  'ext/trace_nums.c',
-  'ext/trace_nums.h',
-  'ext/extconf.rb',
-  'lib/*.rb',
+  'ext/linecache/trace_nums.c',
+  'ext/linecache/trace_nums.h',
+  'ext/linecache/extconf.rb',
+  'lib/**/*.rb',
   'test/*.rb',
   'test/data/*.rb',
   'test/short-file'
@@ -34,7 +34,7 @@ FILES = FileList[
 
 desc 'Test everything'
 Rake::TestTask.new(:test) do |t|
-  t.libs << './lib'
+  t.libs << 'ext'
   t.pattern = 'test/test-*.rb'
   t.options = '--verbose' if $VERBOSE
 end
@@ -42,7 +42,7 @@ task :test => :lib
 
 desc 'Create the core ruby-debug shared library extension'
 task :lib do
-  Dir.chdir('ext') do
+  Dir.chdir('ext/linecache') do
     system("#{Gem.ruby} extconf.rb && make")
   end
 end
@@ -76,8 +76,7 @@ EOF
   spec.platform = Gem::Platform::RUBY
   spec.require_path = 'lib'
   spec.files = FILES.to_a  
-  spec.add_dependency('rbx-require-relative', '> 0.0.4')
-  spec.extensions = ['ext/extconf.rb']
+  spec.extensions = ['ext/linecache/extconf.rb']
 
   spec.required_ruby_version = '>= 1.8.7'
   spec.date = Time.now
@@ -85,7 +84,7 @@ EOF
   
   # rdoc
   spec.has_rdoc = true
-  spec.extra_rdoc_files = ['README', 'lib/linecache.rb', 'lib/tracelines.rb']
+  spec.extra_rdoc_files = ['README', 'lib/linecache.rb', 'lib/linecache/tracelines.rb']
 
   spec.test_files = FileList['test/*.rb']
   gem_file = "#{spec.name}-#{spec.version}.gem"
@@ -93,7 +92,7 @@ EOF
 end
 
 # Rake task to build the default package
-Rake::GemPackageTask.new(default_spec) do |pkg|
+Gem::PackageTask.new(default_spec) do |pkg|
   pkg.need_tar = true
 end
 
@@ -105,7 +104,6 @@ win_spec.extensions = []
 ## win_spec.platform = Gem::Platform::WIN32 # deprecated
 win_spec.platform = 'mswin32'
 win_spec.files += ["lib/#{SO_NAME}"]
-win_spec.add_dependency('rbx-require-relative', '> 0.0.4')
 
 desc 'Create Windows Gem'
 task :win32_gem do
@@ -160,7 +158,7 @@ end
 
 # ---------  RDoc Documentation ------
 desc 'Generate rdoc documentation'
-Rake::RDocTask.new('rdoc') do |rdoc|
+RDoc::Task.new('rdoc') do |rdoc|
   rdoc.rdoc_dir = 'doc'
   rdoc.title    = "linecache #{LineCache::VERSION} Documentation"
   rdoc.options << '--main' << 'README'
@@ -185,3 +183,11 @@ task :install => :gem do
   end
 end
 
+namespace :jruby do
+  jruby_spec = default_spec.clone
+  jruby_spec.platform   = "java"
+  jruby_spec.files      = jruby_spec.files.reject {|f| f =~ /^ext/ }
+  jruby_spec.extensions = []
+
+  Gem::PackageTask.new(jruby_spec) {}
+end

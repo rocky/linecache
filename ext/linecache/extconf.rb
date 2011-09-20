@@ -13,4 +13,4 @@ else
   exit(1)
 end
 
-create_makefile("trace_nums")
+create_makefile("linecache/trace_nums")

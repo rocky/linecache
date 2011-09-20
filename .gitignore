@@ -1,0 +1,5 @@
+pkg
+ext/*/Makefile
+ext/*/trace_nums.bundle
+ext/*/trace_nums.so
+ext/*/trace_nums.o

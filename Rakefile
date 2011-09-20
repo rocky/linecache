@@ -23,9 +23,9 @@ FILES = FileList[
   'NEWS',
   'README',
   'Rakefile',
-  'ext/trace_nums.c',
-  'ext/trace_nums.h',
-  'ext/extconf.rb',
+  'ext/linecache/trace_nums.c',
+  'ext/linecache/trace_nums.h',
+  'ext/linecache/extconf.rb',
   'lib/**/*.rb',
   'test/*.rb',
   'test/data/*.rb',
@@ -42,7 +42,7 @@ task :test => :lib
 
 desc 'Create the core ruby-debug shared library extension'
 task :lib do
-  Dir.chdir('ext') do
+  Dir.chdir('ext/linecache') do
     system("#{Gem.ruby} extconf.rb && make")
   end
 end
@@ -76,7 +76,7 @@ EOF
   spec.platform = Gem::Platform::RUBY
   spec.require_path = 'lib'
   spec.files = FILES.to_a  
-  spec.extensions = ['ext/extconf.rb']
+  spec.extensions = ['ext/linecache/extconf.rb']
 
   spec.required_ruby_version = '>= 1.8.7'
   spec.date = Time.now

@@ -34,7 +34,7 @@ FILES = FileList[
 
 desc 'Test everything'
 Rake::TestTask.new(:test) do |t|
-  t.libs << './lib'
+  t.libs << 'ext'
   t.pattern = 'test/test-*.rb'
   t.options = '--verbose' if $VERBOSE
 end

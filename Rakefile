@@ -1,8 +1,8 @@
 #!/usr/bin/env rake
 # -*- Ruby -*-
 require 'rubygems'
-require 'rake/gempackagetask'
-require 'rake/rdoctask'
+require 'rubygems/package_task'
+require 'rdoc/task'
 require 'rake/testtask'
 
 SO_NAME = 'trace_nums.so'
@@ -92,7 +92,7 @@ EOF
 end
 
 # Rake task to build the default package
-Rake::GemPackageTask.new(default_spec) do |pkg|
+Gem::PackageTask.new(default_spec) do |pkg|
   pkg.need_tar = true
 end
 
@@ -158,7 +158,7 @@ end
 
 # ---------  RDoc Documentation ------
 desc 'Generate rdoc documentation'
-Rake::RDocTask.new('rdoc') do |rdoc|
+RDoc::Task.new('rdoc') do |rdoc|
   rdoc.rdoc_dir = 'doc'
   rdoc.title    = "linecache #{LineCache::VERSION} Documentation"
   rdoc.options << '--main' << 'README'

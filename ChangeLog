@@ -1,3 +1,8 @@
+2011-09-28  rocky <rockyb@rubyforge.org>
+
+	* ChangeLog, Rakefile, svn2cl_usermap: We're now using git so
+	convert svn2cl to git2cl
+
 2011-09-28  R. Bernstein <rocky.bernstein@gmail.com>
 
 	Merge pull request #1 from jfirebaugh/jruby  JRuby support.

@@ -4,12 +4,11 @@ begin require 'rubygems' rescue LoadError end
 # require 'ruby-debug' ; Debugger.start(:post-mortem => true)
 
 module TraceLineNumbers
-  @@SRC_DIR = File.expand_path(File.dirname(__FILE__))
   begin
-    require File.join(@@SRC_DIR, '..', 'ext', 'trace_nums')
+    require 'linecache/trace_nums.so'
   rescue LoadError
-    # MSWindows seems to put this in lib rather than ext.
-    require File.join(@@SRC_DIR, '..', 'lib', 'trace_nums')
+    # Require stub implementation if native extensions are not available.
+    require 'linecache/trace_nums.rb'
   end
 
   # Return an array of lines numbers that could be 

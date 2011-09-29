@@ -62,10 +62,8 @@ SCRIPT_LINES__ = {} unless defined? SCRIPT_LINES__
 require 'digest/sha1'
 require 'set'
 
-begin require 'rubygems' rescue LoadError end
-require 'require_relative'
-require_relative 'tracelines'
-require_relative 'version'
+require 'linecache/tracelines'
+require 'linecache/version'
 # require 'ruby-debug' ; Debugger.start
 
 # = module LineCache

@@ -53,7 +53,7 @@ task :check => :test
 
 desc 'Create a GNU-style ChangeLog via svn2cl'
 task :ChangeLog do
-  system('svn2cl --authors=svn2cl_usermap')
+  system('git log --pretty --numstat --summary | git2cl > ChangeLog')
 end
 
 gem_file = nil

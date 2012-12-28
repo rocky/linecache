@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
-# $Id$
 # 
-#   Copyright (C) 2007, 2008, 2010, 2011 Rocky Bernstein <rockyb@rubyforge.net>
+#   Copyright (C) 2007, 2008, 2010-2012 Rocky Bernstein <rockyb@rubyforge.net>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -77,7 +76,6 @@ module LineCache
   @@file_cache = {} 
   @@script_cache = {} 
 
-
   # Used for CodeRay syntax highlighting
   @@ruby_highlighter = nil
   
@@ -107,7 +105,8 @@ module LineCache
   at_exit { remove_script_temps }
 
   
-  # Clear the file cache entirely.
+  # Clear the file cache. If no filename is given clear it entirely.
+  # if a filename is given, clear just that filename.
   def clear_file_cache(filename=nil)
     if filename 
       if @@file_cache[filename]
@@ -206,17 +205,6 @@ module LineCache
       update_script_cache(script, opts)
     end
     script
-  end
-
-  # Cache file name or script object if it's not already cached.
-  # Return the expanded filename for it in the cache if a filename,
-  # or the script, or nil if we can't find the file.
-  def cache(file_or_script, reload_on_change=false)
-    if file_or_script.kind_of?(String)
-      cache_file(file_or_script, reload_on_change)
-    else
-      cache_script(file_or_script)
-    end
   end
 
   # Cache filename if it's not already cached.
@@ -560,6 +548,6 @@ if __FILE__ == $0
   line = LineCache::getline(__FILE__, 7)
   puts "The 7th line is\n#{line}" 
   LineCache::remap_file_lines(__FILE__, 'test2', (10..20), 6)
-  puts LineCache::getline('test2', 10)
-  puts "Remapped 10th line of test2 is\n#{line}" 
+  line = LineCache::getline('test2', 11)
+  puts "Remapped 11th line of test2 is\n#{line}" 
 end

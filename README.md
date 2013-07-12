@@ -1,4 +1,4 @@
-# LineCache - A module to read and cache file information of a Ruby program.
+## LineCache - A module to read and cache file information of a Ruby program.
 
 The LineCache module allows one to get any line from any file, caching
 the lines and file information on first access to the file. Although

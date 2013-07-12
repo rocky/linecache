@@ -9,30 +9,30 @@ class TestLineCache < Test::Unit::TestCase
   @@TEST_DIR = File.expand_path(File.dirname(__FILE__))
   @@TOP_SRC_DIR = File.join(@@TEST_DIR, '..', 'lib')
   require File.join(@@TOP_SRC_DIR, 'linecache.rb')
-  
+
   def setup
     LineCache::clear_file_cache
   end
-  
+
   def test_basic
     fp = File.open(__FILE__, 'r')
     compare_lines = fp.readlines()
     fp.close
-    
+
     # Test getlines to read this file.
     lines = LineCache::getlines(__FILE__)
     assert_equal(compare_lines, lines,
                  'We should get exactly the same lines as reading this file.')
-    
+
     # Test getline to read this file. The file should now be cached,
     # so internally a different set of routines are used.
     test_line = 1
     line = LineCache::getline(__FILE__, test_line)
     assert_equal(compare_lines[test_line-1], line,
                  'We should get exactly the same line as reading this file.')
-    
+
     # Test getting the line via a relative file name
-    Dir.chdir(File.dirname(__FILE__)) do 
+    Dir.chdir(File.dirname(__FILE__)) do
       short_file = File.basename(__FILE__)
       test_line = 10
       line = LineCache::getline(short_file, test_line)
@@ -73,7 +73,7 @@ class TestLineCache < Test::Unit::TestCase
     assert_equal(false, LineCache::cached_script?('./short-file'),
                  "Should not find './short-file' in SCRIPT_LINES__")
     assert_equal(true, 78 < LineCache.size(__FILE__))
-    # Dir.chdir(File.dirname(__FILE__)) do 
+    # Dir.chdir(File.dirname(__FILE__)) do
     #   load('./short-file', 0)
     #   assert_equal(true, LineCache::cached_script?('./short-file'),
     #                "Should be able to find './short-file' in SCRIPT_LINES__")
@@ -93,23 +93,23 @@ class TestLineCache < Test::Unit::TestCase
     line5 = LineCache::getline(__FILE__, 5)
     LineCache::remap_file_lines(__FILE__, 'test2', 9, 5)
     rline9  = LineCache::getline('test2', 9)
-    assert_equal(line5, rline9, 
+    assert_equal(line5, rline9,
                  'lines should be the same via remap_file_line - remap integer')
 
     line6 = LineCache::getline(__FILE__, 6)
     rline10 = LineCache::getline('test2', 10)
-    assert_equal(line6, rline10, 
+    assert_equal(line6, rline10,
                  'lines should be the same via remap_file_line - range')
 
     line7 = LineCache::getline(__FILE__, 7)
     rline11 = LineCache::getline('test2', 11)
-    assert_equal(line7, rline11, 
+    assert_equal(line7, rline11,
                  'lines should be the same via remap_file_line - range')
 
     line8 = LineCache::getline(__FILE__, 8)
     LineCache::remap_file_lines(__FILE__, nil, 20, 8)
     rline20 = LineCache::getline(__FILE__, 20)
-    assert_equal(line8, rline20, 
+    assert_equal(line8, rline20,
                  'lines should be the same via remap_file_line - nil file')
   end
 
@@ -142,7 +142,7 @@ class TestLineCache < Test::Unit::TestCase
   end
 
   def test_sha1
-    test_file = File.join(@@TEST_DIR, 'short-file') 
+    test_file = File.join(@@TEST_DIR, 'short-file')
     LineCache::cache(test_file)
     assert_equal('3e1d87f3399fc73ae5683e106bce1b5ba823fc50',
                  LineCache::sha1(test_file))
@@ -152,12 +152,12 @@ class TestLineCache < Test::Unit::TestCase
     x = nil
     line1 = "loc = Rubinius::VM::backtrace(0)[0]"
     eval(line1 + "
-  x = LineCache::getline(loc.static_scope.script, 1)")
+  x = LineCache::getline(loc.constant_scope.script, 1)")
     assert_equal(line1, x)
     eval("loc = Rubinius::VM::backtrace(0)[0]
-  assert_equal(2, LineCache::size(loc.static_scope.script))")
+  assert_equal(2, LineCache::size(loc.constant_scope.script))")
     string = "loc = Rubinius::VM::backtrace(0)[0]
-  LineCache::map_script(loc.static_scope.script)"
+  LineCache::map_script(loc.constant_scope.script)"
     temp_filename = eval(string)
     got_lines = File.open(temp_filename).readlines.join('')
     assert_equal(string, got_lines.chomp)

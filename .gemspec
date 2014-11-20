@@ -1,9 +1,11 @@
 # -*- Ruby -*-
 # -*- encoding: utf-8 -*-
+Encoding.default_external = Encoding::UTF_8
+Encoding.default_internal = Encoding::UTF_8
 require 'rake'
-require 'rubygems' unless 
+require 'rubygems' unless
   Object.const_defined?(:Gem)
-require File.dirname(__FILE__) + "/lib/linecache" unless 
+require File.dirname(__FILE__) + "/lib/linecache" unless
   Object.const_defined?(:LineCache)
 
 FILES = FileList[
@@ -17,7 +19,7 @@ FILES = FileList[
   'test/*.rb',
   'test/data/*.rb',
   'test/short-file'
-]                        
+]
 
 
 Gem::Specification.new do |spec|
@@ -27,18 +29,18 @@ Gem::Specification.new do |spec|
 LineCache is a module for reading and caching lines. This may be useful for
 example in a debugger where the same lines are shown many times.
 
-This version works only with a patched version of Ruby 1.9.2 and rb-threadframe.
+This version works only with a patched version of Ruby 1.9.2 or 1.9.3 and rb-threadframe.
 EOF
   spec.add_dependency('rb-threadframe', '>= 0.32')
   spec.email        = 'rockyb@rubyforge.net'
-  spec.files        = FILES.to_a  
+  spec.files        = FILES.to_a
   spec.has_rdoc     = true
   spec.homepage     = "http://rubyforge.org/projects/rocky-hacks/linecache"
   spec.name         = "linecache-tf"
   spec.license      = 'GPL2'
   spec.platform     = Gem::Platform::RUBY
   spec.require_path = 'lib'
-  spec.required_ruby_version = '~> 1.9.2'
+  spec.required_ruby_version = '~> 1.9.2, ~>1.9.3'
   spec.rubyforge_project = 'rocky-hacks'
   spec.summary      = 'Module to read and cache Ruby program files and file information'
   spec.version      = LineCache::VERSION

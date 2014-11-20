@@ -1,8 +1,6 @@
 #!/usr/bin/env rake
 # -*- Ruby -*-
 require 'rubygems'
-require 'rake/gempackagetask'
-require 'rake/rdoctask'
 require 'rake/testtask'
 require 'fileutils'
 
@@ -13,6 +11,7 @@ def gemspec
   @gemspec ||= eval(File.read('.gemspec'), binding, '.gemspec')
 end
 
+require 'rubygems/package_task'
 desc "Build the gem"
 task :package=>:gem
 task :gem=>:gemspec do
@@ -62,6 +61,7 @@ task :gemspec do
 end
 
 # ---------  RDoc Documentation ------
+require 'rdoc/task'
 desc "Generate rdoc documentation"
 Rake::RDocTask.new("rdoc") do |rdoc|
   rdoc.rdoc_dir = 'doc'

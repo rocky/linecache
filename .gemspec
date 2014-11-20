@@ -40,7 +40,7 @@ EOF
   spec.license      = 'GPL2'
   spec.platform     = Gem::Platform::RUBY
   spec.require_path = 'lib'
-  spec.required_ruby_version = '~> 1.9.2, ~>1.9.3'
+  spec.required_ruby_version = '>= 1.9.2'
   spec.rubyforge_project = 'rocky-hacks'
   spec.summary      = 'Module to read and cache Ruby program files and file information'
   spec.version      = LineCache::VERSION

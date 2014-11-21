@@ -1,464 +1,731 @@
-2011-01-28 16:21  Rocky Bernstein
+2014-11-20  rocky <rockyb@rubyforge.org>
 
-	* lib/linecache.rb: Start syntax highlighting.
+	* lib/linecache.rb: Get ready for release 1.2
 
-2010-12-18 23:13  Rocky Bernstein
+2014-11-20  rocky <rockyb@rubyforge.org>
 
-	* lib/linecache.rb: Bump version number
+	* .gemspec: Fix botched required_ruby_version
 
-2010-12-18 23:12  Rocky Bernstein
+2014-11-20  rocky <rockyb@rubyforge.org>
 
-	* lib/tracelines.rb: Remove shadowing variable warning
+	* .gemspec, .gitignore, NEWS, Rakefile, lib/linecache.rb: 
+	linecache.rb: encode using UTF-8 to catch things like Copyright ©.
+	.gemspec allow 1.9.2 or 1.9.3.  Rakefile: revise for this year's
+	conventions NEWS: get ready for a new release.  Strip trailing
+	blanks
 
-2010-12-10 16:31  Rocky Bernstein
+2011-07-24  Rocky Bernstein <rockyb@rubyforge.org>
 
-	* ChangeLog, NEWS, lib/linecache.rb: Phel. Mad. Release
+	* .gemspec, README: Correct summary in .gemspec and improve it in
+	README.  git-svn-id:
 
-2010-11-27 02:12  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@271 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2011-02-16  Rocky Bernstein <rockyb@rubyforge.org>
+
+	* Rakefile: Gemspec#file_name is what I need git-svn-id:
+
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@253 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2011-02-11  Rocky Bernstein <rockyb@rubyforge.org>
+
+	* Rakefile: Adding --verbose to test/unit has changed over the years git-svn-id:
+
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@251 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2011-02-02  Rocky Bernstein <rockyb@rubyforge.org>
+
+	* ChangeLog, NEWS, lib/linecache.rb: Get ready for release git-svn-id:
+
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@245 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2011-01-28  Rocky Bernstein <rockyb@rubyforge.org>
+
+	* lib/linecache.rb: Start syntax highlighting.  git-svn-id:
+
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@244 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2010-12-18  Rocky Bernstein <rockyb@rubyforge.org>
+
+	* lib/linecache.rb: Bump version number git-svn-id:
+
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@234 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2010-12-18  Rocky Bernstein <rockyb@rubyforge.org>
+
+	* lib/tracelines.rb: Remove shadowing variable warning git-svn-id:
+
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@233 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2010-12-10  Rocky Bernstein <rockyb@rubyforge.org>
+
+	* ChangeLog, NEWS, lib/linecache.rb: Phel. Mad. Release git-svn-id:
+
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@230 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2010-11-27  Rocky Bernstein <rockyb@rubyforge.org>
 
 	* lib/linecache.rb, test/test-linecache.rb: Add tests for new iseq
-	  caching.
+	caching.  git-svn-id:
 
-2010-11-26 04:27  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@228 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2010-11-26  Rocky Bernstein <rockyb@rubyforge.org>
 
 	* .gemspec: Don't use lib/version.rb any more. Also rvm lists Ruby
-	  as 1.9.2-nframe no just 1.9.2.
+	as 1.9.2-nframe no just 1.9.2.  git-svn-id:
 
-2010-11-26 02:23  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@225 a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* lib/linecache.rb: Work more on iseq caching.
+2010-11-26  Rocky Bernstein <rockyb@rubyforge.org>
 
-2010-11-26 02:01  Rocky Bernstein
+	* lib/linecache.rb: Work more on iseq caching.  git-svn-id:
+
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@224 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2010-11-26  Rocky Bernstein <rockyb@rubyforge.org>
 
 	* Rakefile, lib/linecache.rb, lib/version.rb,
-	  test/test-linecache.rb: Pick up version from LineCache module.
-	  Include "\n" in sha1 calculation. Start work on iseq caching.
+	test/test-linecache.rb: Pick up version from LineCache module.
+	Include "\n" in sha1 calculation. Start work on iseq caching.  git-svn-id:
 
-2010-09-22 17:00  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@223 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2010-09-22  Rocky Bernstein <rockyb@rubyforge.org>
 
 	* Rakefile: Correct suspicious test task so it doesn't modify
-	  itself.
+	itself.  git-svn-id:
 
-2010-09-21 21:12  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@206 a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* .gemspec, Rakefile: Title on RDOC referred to wrong package
+2010-09-21  Rocky Bernstein <rockyb@rubyforge.org>
 
-2010-09-21 04:13  Rocky Bernstein
+	* .gemspec, Rakefile: Title on RDOC referred to wrong package git-svn-id:
 
-	* .gemspec: Testing for wrong constant.
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@204 a698f23b-def3-46c9-893a-1fd2e354aa04
 
-2010-09-21 00:47  Rocky Bernstein
+2010-09-21  Rocky Bernstein <rockyb@rubyforge.org>
 
-	* Rakefile: Small tweaks to Rakefile building on previous stuff
+	* .gemspec: Testing for wrong constant.  git-svn-id:
 
-2010-09-20 23:13  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@202 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2010-09-21  Rocky Bernstein <rockyb@rubyforge.org>
+
+	* Rakefile: Small tweaks to Rakefile building on previous stuff git-svn-id:
+
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@200 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2010-09-20  Rocky Bernstein <rockyb@rubyforge.org>
 
 	* .gemspec, ChangeLog, Makefile, Rakefile, VERSION, lib/Makefile,
-	  lib/linecache.rb, lib/version.rb: Administrivia: Add gemspec
-	  file, simplify Rakefile. Add Makefile for compatibility for us
-	  old farts.
+	lib/linecache.rb, lib/version.rb: Administrivia: Add gemspec file,
+	simplify Rakefile. Add Makefile for compatibility for us old farts.  git-svn-id:
 
-2010-09-13 14:49  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@199 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2010-09-13  Rocky Bernstein <rockyb@rubyforge.org>
 
 	* ChangeLog, NEWS, Rakefile, VERSION: Update description for
-	  gemcutter
+	gemcutter git-svn-id:
 
-2010-09-13 14:42  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@196 a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* ChangeLog, Rakefile: ChangeLog now gets info from branch
+2010-09-13  Rocky Bernstein <rockyb@rubyforge.org>
 
-2010-09-13 14:21  Rocky Bernstein
+	* ChangeLog, Rakefile: ChangeLog now gets info from branch git-svn-id:
 
-	* NEWS: One more update
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@195 a698f23b-def3-46c9-893a-1fd2e354aa04
 
-2010-09-13 14:19  Rocky Bernstein
+2010-09-13  Rocky Bernstein <rockyb@rubyforge.org>
 
-	* ChangeLog, NEWS, README, Rakefile: Get ready for release tf-0.43
+	* NEWS: One more update git-svn-id:
 
-2010-04-25 13:08  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@194 a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Rakefile: User needs to use "sudo rake install" when needed.
+2010-09-13  Rocky Bernstein <rockyb@rubyforge.org>
 
-2010-04-21 22:02  Rocky Bernstein
+	* ChangeLog, NEWS, README, Rakefile: Get ready for release tf-0.43 git-svn-id:
+
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@193 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2010-04-25  Rocky Bernstein <rockyb@rubyforge.org>
+
+	* Rakefile: User needs to use "sudo rake install" when needed.  git-svn-id:
+
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@192 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2010-04-21  Rocky Bernstein <rockyb@rubyforge.org>
 
 	* test/test-lnum.rb, test/test-tracelines.rb: Remove array
-	  require_relative
+	require_relative git-svn-id:
 
-2010-04-21 22:01  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@191 a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* ChangeLog: Administrivia
+2010-04-21  Rocky Bernstein <rockyb@rubyforge.org>
 
-2010-03-23 16:30  Rocky Bernstein
+	* ChangeLog: Administrivia git-svn-id:
 
-	* ChangeLog, Rakefile: Add install targets.
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@190 a698f23b-def3-46c9-893a-1fd2e354aa04
 
-2009-12-06 14:16  Rocky Bernstein
+2010-03-23  Rocky Bernstein <rockyb@rubyforge.org>
+
+	* ChangeLog, Rakefile: Add install targets.  git-svn-id:
+
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@189 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2009-12-06  Rocky Bernstein <rockyb@rubyforge.org>
 
 	* ChangeLog, test/data/def1.rb: Dec 4 change by nobu to parse.y
-	  adjusts the methdo definition to the "def" line:
-	  Ruby Redmine Bug #2427.
+	adjusts the methdo definition to the "def" line: Ruby Redmine Bug
+	#2427.  git-svn-id:
 
-2009-10-22 13:05  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@185 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2009-10-22  Rocky Bernstein <rockyb@rubyforge.org>
 
 	* lib/linecache.rb: "unmap" -> "map". Again, I think I got this
-	  backwards. Also, we need
-	  to run map_file even if lines in that haven't been remapped.
+	backwards. Also, we need to run map_file even if lines in that
+	haven't been remapped.  git-svn-id:
 
-2009-10-22 11:47  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@184 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2009-10-22  Rocky Bernstein <rockyb@rubyforge.org>
 
 	* lib/linecache.rb: I think I got arguments in the wrong order in
-	  remap_file.
+	remap_file.  git-svn-id:
 
-2009-10-18 23:47  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@183 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2009-10-18  Rocky Bernstein <rockyb@rubyforge.org>
 
 	* lib/tracelines.rb, test/data/block2.rb, test/data/case1.rb,
-	  test/data/case2.rb, test/data/case5.rb, test/data/class1.rb,
-	  test/data/def1.rb, test/data/for1.rb, test/data/if4.rb,
-	  test/data/if5.rb, test/data/if7.rb, test/data/match3.rb,
-	  test/data/match3a.rb, test/rcov-bug.rb, test/test-linecache.rb,
-	  test/test-tracelines.rb: Itereate over all (child) instruction
-	  sequence now, using support from a patch to Ruby 1.9.
+	test/data/case2.rb, test/data/case5.rb, test/data/class1.rb,
+	test/data/def1.rb, test/data/for1.rb, test/data/if4.rb,
+	test/data/if5.rb, test/data/if7.rb, test/data/match3.rb,
+	test/data/match3a.rb, test/rcov-bug.rb, test/test-linecache.rb,
+	test/test-tracelines.rb: Itereate over all (child) instruction
+	sequence now, using support from a patch to Ruby 1.9.  git-svn-id:
 
-2009-09-26 14:56  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@182 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2009-09-26  Rocky Bernstein <rockyb@rubyforge.org>
 
 	* ChangeLog, lib/tracelines.rb: offset2lines -> offsetlines name
-	  change in rb-threadframe.
+	change in rb-threadframe.  git-svn-id:
 
-2009-09-25 13:53  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@181 a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2009-09-25  Rocky Bernstein <rockyb@rubyforge.org>
 
 	* Rakefile, lib/linecache.rb, test/test-lnum.rb: linecache.rb: need
-	  to add to cache if file not loaded
-	  Rakefile: add dependency on rb-threadframe
-	  remove stray debug print.
+	to add to cache if file not loaded Rakefile: add dependency on
+	rb-threadframe remove stray debug print.  git-svn-id:
 
-2009-09-25 08:51  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@180 a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* ., ChangeLog, Rakefile, ext, lib/linecache.rb, lib/tracelines.rb,
-	  test/data/begin1.rb, test/data/begin2.rb, test/data/begin3.rb,
-	  test/data/block1.rb, test/data/block2.rb, test/data/case1.rb,
-	  test/data/case3.rb, test/data/case4.rb, test/data/case5.rb,
-	  test/data/class1.rb, test/data/comments1.rb, test/data/for1.rb,
-	  test/data/if1.rb, test/data/if2.rb, test/data/if3.rb,
-	  test/data/if4.rb, test/data/if5.rb, test/data/if6.rb,
-	  test/data/if7.rb, test/data/match3.rb, test/data/match3a.rb,
-	  test/rcov-bug.rb, test/test-linecache.rb, test/test-lnum.rb,
-	  test/test-tracelines.rb: linecache for Ruby 1.9 via thread_frame.
+2009-09-25  Rocky Bernstein <rockyb@rubyforge.org>
 
-2009-08-05 05:04  mark-moseley
+	* ChangeLog, Rakefile, ext/extconf.rb, ext/trace_nums.c,
+	ext/trace_nums.h, lib/linecache.rb, lib/tracelines.rb,
+	test/data/begin1.rb, test/data/begin2.rb, test/data/begin3.rb,
+	test/data/block1.rb, test/data/block2.rb, test/data/case1.rb,
+	test/data/case3.rb, test/data/case4.rb, test/data/case5.rb,
+	test/data/class1.rb, test/data/comments1.rb, test/data/for1.rb,
+	test/data/if1.rb, test/data/if2.rb, test/data/if3.rb,
+	test/data/if4.rb, test/data/if5.rb, test/data/if6.rb,
+	test/data/if7.rb, test/data/match3.rb, test/data/match3a.rb,
+	test/rcov-bug.rb, test/test-linecache.rb, test/test-lnum.rb,
+	test/test-tracelines.rb: linecache for Ruby 1.9 via thread_frame.  git-svn-id:
 
-	* minor cleanup
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/branches/ruby-1.9@179 a698f23b-def3-46c9-893a-1fd2e354aa04
 
-2009-02-09 01:16  Rocky Bernstein
+2009-08-05  Mark Moseley <mark@fast-software.com>
 
-	* Another doc typo.
+	* ext/trace_nums.c, ext/trace_nums.h: minor cleanup git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/trunk@177
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-2009-02-08 17:19  Rocky Bernstein
+2009-02-09  Rocky Bernstein <rockyb@rubyforge.org>
 
-	* Update doc.
+	* test/test-linecache.rb: Another doc typo.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/trunk@170
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-2009-02-08 02:07  Rocky Bernstein
+2009-02-08  Rocky Bernstein <rockyb@rubyforge.org>
 
-	* Comparing wrong fields in stat comparison.
+	* README: Update doc.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/trunk@169
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-2009-02-07 09:21  Rocky Bernstein
+2009-02-08  Rocky Bernstein <rockyb@rubyforge.org>
 
-	* Another doc typo.
+	* lib/linecache.rb: Comparing wrong fields in stat comparison.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/trunk@168
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-2009-02-07 02:31  Rocky Bernstein
+2009-02-07  Rocky Bernstein <rockyb@rubyforge.org>
 
-	* Add ',' to doc comment.
+	* lib/linecache.rb: Another doc typo.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/trunk@167
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-2009-02-06 04:47  Rocky Bernstein
+2009-02-07  Rocky Bernstein <rockyb@rubyforge.org>
 
-	* Update documentation.
+	* lib/linecache.rb: Add ',' to doc comment.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/trunk@166
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-2009-02-02 11:24  Rocky Bernstein
+2009-02-06  Rocky Bernstein <rockyb@rubyforge.org>
 
-	* Move in the right trunk. Or perhaps we'll blow out everything?
-	  Figers are crossed....
+	* README, lib/linecache.rb: Update documentation.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/trunk@165
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-2008-06-12 11:29  Rocky Bernstein
+2009-02-02  Rocky Bernstein <rockyb@rubyforge.org>
 
-	* 0.43 release - small change for MSwin32 - allow sfinding an
-	  extension in lib rather than ext.
+	* : Move in the right trunk. Or perhaps we'll blow out everything?
+	Figers are crossed....  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/trunk@164
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-2008-06-12 00:04  Rocky Bernstein
+2008-06-12  Rocky Bernstein <rockyb@rubyforge.org>
 
-	* Look in lib as well as ext for trace_nums. Win32 puts it in lib.
+	* ChangeLog, VERSION, lib/tracelines.rb: Look in lib as well as ext
+	for trace_nums. Win32 puts it in lib.  git-svn-id:
 
-2008-04-11 02:54  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@143 a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Wasn't listing extension to for C compilation?
+2008-04-11  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-04-10 20:06  Rocky Bernstein
+	* ChangeLog, Rakefile, VERSION: Wasn't listing extension to for C
+	compilation? git-svn-id:
 
-	* What's new for 0.41.
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@120 a698f23b-def3-46c9-893a-1fd2e354aa04
 
-2008-04-10 20:02  Rocky Bernstein
+2008-04-10  Rocky Bernstein <rockyb@rubyforge.org>
 
-	* Forgot to add test/data to the gem.
+	* NEWS: What's new for 0.41.  git-svn-id:
 
-2008-04-10 02:15  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@119 a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* 
+2008-04-10  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-03-28 15:04  Rocky Bernstein
+	* ChangeLog, Rakefile, VERSION: Forgot to add test/data to the gem.  git-svn-id:
 
-	* More if tests
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@118 a698f23b-def3-46c9-893a-1fd2e354aa04
 
-2008-03-09 23:24  Rocky Bernstein
+2008-04-10  Rocky Bernstein <rockyb@rubyforge.org>
 
-	* Deal with Depricated win32.
+	* NEWS: git-svn-id:
 
-2008-03-05 02:01  Rocky Bernstein
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@117 a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add rubyforge_upload task -- code from ruby-memory-profiler.
+2008-03-28  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-03-04 22:47  Rocky Bernstein
+	* test/data/if6.rb, test/data/if7.rb: More if tests git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@97
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Ooops - forgot to credit Ryan Davis and ParseTree.
+2008-03-09  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-02-10 13:59  Rocky Bernstein
+	* ChangeLog, Rakefile, VERSION, lib/linecache.rb: Deal with
+	Depricated win32.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@69
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Go over Rakefile and doc for 0.3 release.
+2008-03-05  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-29 21:51  Rocky Bernstein
+	* Rakefile: Add rubyforge_upload task -- code from
+	ruby-memory-profiler.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@64
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Interface change. Don't know why this didn't get updated before.
+2008-03-04  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-28 15:35  Rocky Bernstein
+	* README: Ooops - forgot to credit Ryan Davis and ParseTree.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@63
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Change line number return from a Set to an Array.
+2008-02-10  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-27 11:24  Rocky Bernstein
+	* ChangeLog, Rakefile, ext/trace_nums.c, svn2cl_usermap: Go over
+	Rakefile and doc for 0.3 release.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@61
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Handle defined? node. Add "if" weirdness test.
+2008-01-29  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-27 04:26  Rocky Bernstein
+	* test/test-linecache.rb: Interface change. Don't know why this
+	didn't get updated before.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@60
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Verify that the 'else' doesn't appear in a trace.
+2008-01-28  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-27 04:21  Rocky Bernstein
+	* ChangeLog, lib/linecache.rb: Change line number return from a Set
+	to an Array.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@59
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Was not showing blocks after when's.
+2008-01-27  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-27 04:03  Rocky Bernstein
+	* ext/trace_nums.c, ext/trace_nums.h, test/data/if5.rb: Handle
+	defined? node. Add "if" weirdness test.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@58
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* trace_nums.c, block1.c, block2.c: bug in handling blocks
-	  lnum-diag.rb: more graceful about not finding the source.
-	  if4.rb: note weirdness in the way comparison works.
+2008-01-27  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-27 02:11  Rocky Bernstein
+	* test/data/case5.rb: Verify that the 'else' doesn't appear in a
+	trace.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@57
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Finish adding all tree nodes. Work on case nodes some more.
-	  lnum-diag.rb: add options to turn on and off various parts.
+2008-01-27  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-26 11:12  Rocky Bernstein
+	* ext/trace_nums.c, test/data/block1.rb, test/data/block2.rb,
+	test/data/case1.rb, test/data/case2.rb, test/data/case3.rb,
+	test/data/case4.rb, test/data/case5.rb, test/data/def1.rb,
+	test/data/each1.rb, test/data/for1.rb, test/data/if3.rb,
+	test/data/if4.rb, test/data/match3.rb, test/data/match3a.rb,
+	test/data/not-lit.rb: Was not showing blocks after when's.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@56
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add comment test and situation where no lines traced.
+2008-01-27  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-26 11:08  Rocky Bernstein
+	* ext/trace_nums.c, test/data/block1.rb, test/data/block2.rb,
+	test/data/if4.rb, test/lnum-diag.rb: trace_nums.c, block1.c,
+	block2.c: bug in handling blocks lnum-diag.rb: more graceful about
+	not finding the source.  if4.rb: note weirdness in the way
+	comparison works.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@55
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add class, scope and module nodes.
+2008-01-27  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-26 10:18  Rocky Bernstein
+	* ext/trace_nums.c, ext/trace_nums.h, test/data/case4.rb,
+	test/data/def1.rb, test/data/if3.rb, test/lnum-diag.rb: Finish
+	adding all tree nodes. Work on case nodes some more.  lnum-diag.rb:
+	add options to turn on and off various parts.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@54
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add more tree nodes.
+2008-01-26  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-26 02:09  Rocky Bernstein
+	* test/data/comments1.rb: Add comment test and situation where no
+	lines traced.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@53
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add Debugger.init which intializes things that rdebug does. This
-	  allows a restart even though rdebug wasn't called initially.
+2008-01-26  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-25 03:50  Rocky Bernstein
+	* ext/trace_nums.c, test/data/class1.rb: Add class, scope and module
+	nodes.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@52
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Some code cleanup.
+2008-01-26  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-25 02:50  Rocky Bernstein
+	* ext/trace_nums.c, test/rcov-bug.rb, test/test-linecache.rb,
+	test/test-tracelines.rb: Add more tree nodes.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@51
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Work over case, when and match3.
+2008-01-26  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-25 00:17  Rocky Bernstein
+	* test/data/each1.rb, test/data/for1.rb, test/data/if1.rb,
+	test/data/if2.rb, test/test-lnum.rb: Add Debugger.init which
+	intializes things that rdebug does. This allows a restart even
+	though rdebug wasn't called initially.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@50
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Trace just line numbers for now until we get a better handle on
-	  things.
+2008-01-25  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-24 13:36  Rocky Bernstein
+	* ext/trace_nums.c: Some code cleanup.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@49
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Need recursion in more places because of block continuation
-	  nodes.
-	  Add nodes needed so we don't complain about rcov-bug.rb:
-	  NODE_MATCH3, NODE_LASN, and NODE_STR (and those similar to that).
+2008-01-25  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-24 04:09  Rocky Bernstein
+	* ext/trace_nums.c, test/data/case1.rb, test/data/case2.rb,
+	test/data/case3.rb, test/data/match3.rb, test/data/match3a.rb: Work
+	over case, when and match3.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@48
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Fix bug if print_file == false
+2008-01-25  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-24 04:04  Rocky Bernstein
+	* ext/trace_nums.c, test/data/begin1.rb, test/data/begin2.rb,
+	test/data/begin3.rb, test/data/end.rb, test/data/match.rb,
+	test/data/not-lit.rb, test/lnum-data/begin1.rb,
+	test/lnum-data/begin2.rb, test/lnum-data/begin3.rb,
+	test/lnum-data/end.rb, test/lnum-data/match.rb,
+	test/lnum-data/not-lit.rb, test/lnum-diag.rb, test/test-lnum.rb,
+	test/test-tracelines.rb: Trace just line numbers for now until we
+	get a better handle on things.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@47
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add more operatiors. Go over existing ones and add more tests of
-	  them.
+2008-01-24  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-23 19:17  Rocky Bernstein
+	* test/lnum-diag.rb, test/rcov-bug.rb, test/test-linecache.rb,
+	test/test-tracelines.rb: Need recursion in more places because of
+	block continuation nodes.  Add nodes needed so we don't complain
+	  about rcov-bug.rb: NODE_MATCH3, NODE_LASN, and NODE_STR (and those
+	similar to that).  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@46
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* What's up.
+2008-01-24  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-23 19:12  Rocky Bernstein
+	* test/lnum-diag.rb: Fix bug if print_file == false git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@45
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Don't assume we have expected line numbers.
+2008-01-24  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-23 19:05  Rocky Bernstein
+	* ext/trace_nums.c, test/lnum-data/begin3.rb,
+	test/lnum-data/end.rb, test/lnum-data/match.rb,
+	test/lnum-data/not-lit.rb, test/lnum-diag.rb: Add more operatiors.
+	Go over existing ones and add more tests of them.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@44
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* A conversion-error bug.
+2008-01-23  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-23 19:04  Rocky Bernstein
+	* NEWS: What's up.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@43
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* variable name typo.
+2008-01-23  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-23 19:03  Rocky Bernstein
+	* test/lnum-diag.rb: Don't assume we have expected line numbers.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@42
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* lnum-diag.rb and parse-show.rb - some diagnostic tools.
+2008-01-23  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-23 16:06  Rocky Bernstein
+	* test/lnum-diag.rb: A conversion-error bug.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@41
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Show add_lines level, nicer formatting including \n for end.
+2008-01-23  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-23 15:32  Rocky Bernstein
+	* test/lnum-diag.rb: variable name typo.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@40
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Generalized routine to test everything in lnum-data
+2008-01-23  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-23 12:07  Rocky Bernstein
+	* ext/trace_nums.c, test/lnum-diag.rb, test/parse-show.rb: 
+	lnum-diag.rb and parse-show.rb - some diagnostic tools.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@39
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* ParseTree is broken for our purposes. Having custom code for
-	  getting
-	  the trace line numbers is going remove a lot of headaches down
-	  the line.
+2008-01-23  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-20 21:37  Rocky Bernstein
+	* ChangeLog, ext/trace_nums.c: Show add_lines level, nicer
+	formatting including \n for end.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@38
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add trace_line_numbers to save/get line numbers which we can set
-	  breakpoints
-	  on.
+2008-01-23  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-20 16:31  Rocky Bernstein
+	* test/test-lnum.rb: Generalized routine to test everything in
+	lnum-data git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@37
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add module TraceLineNumbers for extracting the stoppable lines in
-	  a
-	  Ruby program.
+2008-01-23  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-19 15:55  Rocky Bernstein
+	* Rakefile, ext/extconf.rb, ext/trace_nums.c, ext/trace_nums.h,
+	lib/linecache.rb, lib/tracelines.rb, test/lnum-data/begin1.rb,
+	test/lnum-data/begin2.rb, test/lnum-data/begin3.rb,
+	test/test-tracelines.rb: ParseTree is broken for our purposes.
+	Having custom code for getting the trace line numbers is going
+	remove a lot of headaches down the line.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@36
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Allow nil to mean the same file. More tests.
+2008-01-20  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-19 15:45  Rocky Bernstein
+	* Rakefile, lib/linecache.rb, test/test-linecache.rb: Add
+	trace_line_numbers to save/get line numbers which we can set
+	breakpoints on.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@35
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Start remap_file_lines: ability to remap file ranges.
+2008-01-20  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-17 22:25  Rocky Bernstein
+	* ChangeLog, Rakefile, lib/linecache.rb, lib/tracelines.rb,
+	test/rcov-bug.rb, test/test-tracelines.rb: Add module
+	TraceLineNumbers for extracting the stoppable lines in a Ruby
+	program.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@34
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* lines -> size. Add empty? Add remap_file.
+2008-01-19  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-17 20:05  Rocky Bernstein
+	* lib/linecache.rb, test/test-linecache.rb: Allow nil to mean the
+	same file. More tests.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@33
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add method to get the number of lines in a cached file.
+2008-01-19  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-17 19:42  Rocky Bernstein
+	* lib/linecache.rb, test/test-linecache.rb: Start remap_file_lines:
+	ability to remap file ranges.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@32
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add convenience method for testing presence in SCRIPT_LINES__.
+2008-01-17  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-17 07:30  Rocky Bernstein
+	* lib/linecache.rb, test/test-linecache.rb: lines -> size. Add
+	empty? Add remap_file.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@31
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add path method and test.
+2008-01-17  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-17 06:54  Rocky Bernstein
+	* lib/linecache.rb, test/test-linecache.rb: Add method to get the
+	number of lines in a cached file.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@30
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add @@full2file_cache_key. getlines wasn't returning the right
-	  value sometimes.
-	  Make return from checkcache meaningful. Change return value of
-	  upate_cache().
-	  test-linecache.rb: was testing for buggy behavior!
-	  VERSION: now in 0.3 - hope we get it right this time.
+2008-01-17  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-16 12:51  Rocky Bernstein
+	* lib/linecache.rb, test/short-file, test/test-linecache.rb: Add
+	convenience method for testing presence in SCRIPT_LINES__.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@29
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add cached_files.
+2008-01-17  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-16 01:30  Rocky Bernstein
+	* lib/linecache.rb, test/test-linecache.rb: Add path method and
+	test.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@28
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Update news for 0.2 release.
+2008-01-17  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-15 22:43  Rocky Bernstein
+	* VERSION, lib/linecache.rb, test/test-linecache.rb: Add
+	@@full2file_cache_key. getlines wasn't returning the right value
+	sometimes.  Make return from checkcache meaningful. Change return
+	value of upate_cache().  test-linecache.rb: was testing for buggy
+	behavior! VERSION: now in 0.3 - hope we get it right this time.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@27
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Remove debug line.
+2008-01-16  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-15 22:42  Rocky Bernstein
+	* lib/linecache.rb: Add cached_files.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@26
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Fix some syntax errors.
+2008-01-16  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-15 22:40  Rocky Bernstein
+	* NEWS: Update news for 0.2 release.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@25
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add routine to save and get SHA1.
+2008-01-15  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-15 22:16  Rocky Bernstein
+	* test/test-linecache.rb: Remove debug line.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@24
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add cached? and stat methods to determine in a file is cached and
-	  get
-	  File.stat from it.
+2008-01-15  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-15 08:49  Rocky Bernstein
+	* lib/linecache.rb: Fix some syntax errors.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@23
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Don't ever modify SCRIPT_LINES__. And until SCRIPT_LINES__ is
-	  fixed,
-	  don't read from it. Corrections to comments.
+2008-01-15  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-14 12:27  Rocky Bernstein
+	* Rakefile, lib/linecache.rb, test/short-file,
+	test/test-linecache.rb: Add routine to save and get SHA1.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@22
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add parameter to getline and getlines to reload file on change.
-	  Add
-	  option on clear_file_cache to clear out SCRIPT_LINES__ as well.
-	  TESTS ARE NEEDED.
-	  Update to version 0.2.
+2008-01-15  Rocky Bernstein <rockyb@rubyforge.org>
 
-2008-01-14 03:41  Rocky Bernstein
+	* lib/linecache.rb, test/test-linecache.rb: Add cached? and stat
+	methods to determine in a file is cached and get File.stat from it.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@21
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Use SCRIPT_LINES__ if we can.
+2008-01-15  Rocky Bernstein <rockyb@rubyforge.org>
 
-2007-12-10 16:24  Rocky Bernstein
+	* lib/linecache.rb: Don't ever modify SCRIPT_LINES__. And until
+	SCRIPT_LINES__ is fixed, don't read from it. Corrections to
+	comments.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@20
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* release 0.1
+2008-01-14  Rocky Bernstein <rockyb@rubyforge.org>
 
-2007-12-09 17:47  Rocky Bernstein
+	* ChangeLog, VERSION, lib/linecache.rb: Add parameter to getline and
+	getlines to reload file on change. Add option on clear_file_cache to
+	clear out SCRIPT_LINES__ as well.  TESTS ARE NEEDED.  Update to
+	version 0.2.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@19
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Make Ruby 1.9 compatible.
+2008-01-14  Rocky Bernstein <rockyb@rubyforge.org>
 
-2007-12-09 17:17  Rocky Bernstein
+	* lib/linecache.rb: Use SCRIPT_LINES__ if we can.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@18
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Better tests mean more bugs found. "rake" defaults now to "test".
+2007-12-10  Rocky Bernstein <rockyb@rubyforge.org>
 
-2007-12-09 14:10  Rocky Bernstein
+	* : release 0.1 git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/linecache/trunk@16
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Add VERSION to gem.
+2007-12-09  Rocky Bernstein <rockyb@rubyforge.org>
 
-2007-12-09 14:09  Rocky Bernstein
+	* ChangeLog, Rakefile, lib/linecache.rb, test/test-linecache.rb: 
+	Better tests mean more bugs found. "rake" defaults now to "test".  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/trunk@13
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Change classname to something more appropriate.
+2007-12-09  Rocky Bernstein <rockyb@rubyforge.org>
 
-2007-12-09 13:41  Rocky Bernstein
+	* Rakefile: Add VERSION to gem.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/trunk@7
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* . : ignore doc and pkg
-	  Rakefile: clean now does clobber_rdoc and clobber_package, i.e.
-	  removes
-	  the doc and pkg directories.
+2007-12-09  Rocky Bernstein <rockyb@rubyforge.org>
 
-2007-12-09 13:15  Rocky Bernstein
+	* test/test-linecache.rb: Change classname to something more
+	appropriate.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/trunk@6
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* NEWS, README, linecache.rb: Add $Id$ line
-	  test-linecache.rb: make executable
-	  Rakefile: Correct documentation
+2007-12-09  Rocky Bernstein <rockyb@rubyforge.org>
 
-2007-12-09 12:58  Rocky Bernstein
+	* Rakefile: . : ignore doc and pkg Rakefile: clean now does
+	   clobber_rdoc and clobber_package, i.e. removes the doc and pkg
+	directories.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/trunk@5
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 
-	* Initial import of LineCache, a module for reading and caching
-	  lines.
-	  This time to trunk.
+2007-12-09  Rocky Bernstein <rockyb@rubyforge.org>
+
+	* ChangeLog, README, Rakefile, test/test-linecache.rb: NEWS, README,
+	linecache.rb: Add $Id$ line test-linecache.rb:  make executable
+	Rakefile: Correct documentation git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/trunk@4
+	a698f23b-def3-46c9-893a-1fd2e354aa04
+
+2007-12-09  Rocky Bernstein <rockyb@rubyforge.org>
+
+	* Initial import of LineCache, a module for reading and caching lines.
+	This time to trunk.  git-svn-id:
+	svn://rubyforge.org/var/svn/rocky-hacks/linecache/trunk@3
+	a698f23b-def3-46c9-893a-1fd2e354aa04
 

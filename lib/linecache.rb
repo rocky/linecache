@@ -537,7 +537,6 @@ if __FILE__ == $0
   LineCache::remap_file_lines(__FILE__, 'test2', (10..20), 6)
   puts LineCache::getline('test2', 10)
   puts "Remapped 10th line of test2 is\n#{line}"
-  require 'thread_frame'
   puts eval("x=1
  LineCache::getline(RubyVM::ThreadFrame.current.iseq, 1)")
  puts eval("x=2

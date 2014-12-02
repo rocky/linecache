@@ -13,7 +13,7 @@ FILES = FileList[
   'COPYING',
   'ChangeLog',
   'NEWS',
-  'README',
+  'README.md',
   'Rakefile',
   'lib/*.rb',
   'test/*.rb',
@@ -44,10 +44,10 @@ EOF
   spec.rubyforge_project = 'rocky-hacks'
   spec.summary      = 'Module to read and cache Ruby program files and file information'
   spec.version      = LineCache::VERSION
-  spec.extra_rdoc_files = %w(README lib/linecache.rb lib/tracelines.rb)
+  spec.extra_rdoc_files = %w(README.md lib/linecache.rb lib/tracelines.rb)
 
   # Make the readme file the start page for the generated html
-  spec.rdoc_options += %w(--main README)
+  spec.rdoc_options += %w(--main README.md)
   spec.rdoc_options += ['--title', "LineCache #{LineCache::VERSION} Documentation"]
 
 end

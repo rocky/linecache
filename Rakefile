@@ -40,7 +40,7 @@ task :test => :lib
 desc "same as test"
 task :check => :test
 
-desc "Create a GNU-style ChangeLog via svn2cl"
+desc "Create a GNU-style ChangeLog via git2cl"
 task :ChangeLog do
   system('git log --pretty --numstat --summary | git2cl > ChangeLog')
 end
@@ -71,9 +71,9 @@ Rake::RDocTask.new("rdoc") do |rdoc|
   rdoc.options += %w(--inline-source --line-numbers)
 
   # Make the README file the start page for the generated html
-  rdoc.options += %w(--main README)
+  rdoc.options += %w(--main README.md)
 
-  rdoc.rdoc_files.include('lib/*.rb', 'README', 'COPYING')
+  rdoc.rdoc_files.include('lib/*.rb', 'README.md', 'COPYING')
 end
 desc "Same as rdoc"
 task :doc => :rdoc

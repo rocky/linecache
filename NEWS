@@ -1,3 +1,8 @@
+1.3.1
+15-09-19
+
+- JRuby fix, sync with master and ruby-1.9
+
 tf-1.2
 Nov 20, 2014
 - Handle UTF-8, update rake task for this year's way to do the same thing

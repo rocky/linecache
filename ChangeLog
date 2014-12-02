@@ -1,6 +1,10 @@
+2014-12-01  rocky <rockyb@rubyforge.org>
+
+	* README, README.md: README -> README.md
+
 2014-11-20  rocky <rockyb@rubyforge.org>
 
-	* lib/linecache.rb: Get ready for release 1.2
+	* ChangeLog, Rakefile, lib/linecache.rb: Get ready for release 1.2
 
 2014-11-20  rocky <rockyb@rubyforge.org>
 

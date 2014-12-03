@@ -519,7 +519,7 @@ if __FILE__ == $0
   puts("Files cached: #{LineCache::cached_files.inspect}")
   LineCache::update_cache(__FILE__)
   LineCache::checkcache(__FILE__)
-  puts "#{__FILE__} has #{LineCache::size(__FILE__)} lines"
+  puts "#{__FILE__} has #{LineCache.size(__FILE__)} lines"
   puts "#{__FILE__} trace line numbers:\n" +
     "#{LineCache::trace_line_numbers(__FILE__).to_a.sort.inspect}"
   puts("#{__FILE__} is %scached." %
@@ -538,9 +538,9 @@ if __FILE__ == $0
   puts LineCache::getline('test2', 10)
   puts "Remapped 10th line of test2 is\n#{line}"
   puts eval("x=1
- LineCache::getline(RubyVM::ThreadFrame.current.iseq, 1)")
+ LineCache::getline(RubyVM::Frame.get.iseq, 1)")
  puts eval("x=2
- LineCache::getline(RubyVM::ThreadFrame.current.iseq, 2)")
+ LineCache::getline(RubyVM::Frame.get.iseq, 2)")
 
   # # Try new ANSI Terminal syntax coloring
   LineCache::clear_file_cache(__FILE__)
@@ -556,4 +556,6 @@ if __FILE__ == $0
     # puts line.inspect
     puts line
   end
+  ## to verify info from above.
+  # puts RubyVM::Frame.get.iseq.disasm
 end

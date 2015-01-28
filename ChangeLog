@@ -1,6 +1,31 @@
+2015-01-28  rocky <rockyb@rubyforge.org>
+
+	* .gemspec, NEWS, lib/linecache.rb: Get ready for release 1.3.1
+
+2014-12-03  rocky <rockyb@rubyforge.org>
+
+	* lib/linecache.rb, test/data/end.rb, test/data/if4.rb,
+	test/test-linecache.rb: ThreadFrame -> Frame, current -> get. if4
+	now includes the "end".  Not sure about end.rb including 0 as a line
+	number, though.
+
+2014-12-01  rocky <rockyb@rubyforge.org>
+
+	* README.md: README -> README.md
+
+2014-12-01  rocky <rockyb@rubyforge.org>
+
+	* README, README.md: README -> README.md
+
+2014-12-01  rocky <rockyb@rubyforge.org>
+
+	* .gemspec, lib/linecache.rb, lib/tracelines.rb: Start a Ruby 2.1.5
+	branch. Requires patches https://code.google.com/p/ruby-19-debugger/
+	though.
+
 2014-11-20  rocky <rockyb@rubyforge.org>
 
-	* lib/linecache.rb: Get ready for release 1.2
+	* ChangeLog, Rakefile, lib/linecache.rb: Get ready for release 1.2
 
 2014-11-20  rocky <rockyb@rubyforge.org>
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-#   Copyright (C) 2007-2011, 2014 Rocky Bernstein
+#   Copyright (C) 2007-2011, 2014-2015 Rocky Bernstein
 #   <rockyb@rubyforge.net>
 #
 #    This program is free software; you can redistribute it and/or modify
@@ -70,7 +70,7 @@ require_relative 'tracelines'
 # = module LineCache
 # A module to read and cache lines of a Ruby program.
 module LineCache
-  VERSION = '1.2'
+  VERSION = '1.3.1'
   LineCacheInfo = Struct.new(:stat, :line_numbers, :lines, :path, :sha1) unless
     defined?(LineCacheInfo)
 

@@ -13,7 +13,7 @@ FILES = FileList[
   'COPYING',
   'ChangeLog',
   'NEWS',
-  'README',
+  'README.md',
   'Rakefile',
   'lib/*.rb',
   'test/*.rb',
@@ -34,7 +34,6 @@ rb-threadframe, or a patched version of Ruby 1.9.3, or 2.1.5 (not
 needing rb-threadframe).
 
 EOF
-  spec.add_dependency('rb-threadframe', '>= 0.32')
   spec.email        = 'rockyb@rubyforge.net'
   spec.files        = FILES.to_a
   spec.has_rdoc     = true
@@ -43,14 +42,14 @@ EOF
   spec.license      = 'GPL2'
   spec.platform     = Gem::Platform::RUBY
   spec.require_path = 'lib'
-  spec.required_ruby_version = '>= 2.1.5'
+  # spec.required_ruby_version = '~> 2.1'
   spec.rubyforge_project = 'rocky-hacks'
   spec.summary      = 'Module to read and cache Ruby program files and file information'
   spec.version      = LineCache::VERSION
-  spec.extra_rdoc_files = %w(README lib/linecache.rb lib/tracelines.rb)
+  spec.extra_rdoc_files = %w(README.md lib/linecache.rb lib/tracelines.rb)
 
   # Make the readme file the start page for the generated html
-  spec.rdoc_options += %w(--main README)
+  spec.rdoc_options += %w(--main README.md)
   spec.rdoc_options += ['--title', "LineCache #{LineCache::VERSION} Documentation"]
 
 end

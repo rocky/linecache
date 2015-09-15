@@ -496,14 +496,12 @@ module LineCache
       return false unless stat
     end
     begin
-      fp = File.open(path, 'r')
-      raw_string = fp.read
-      fp.rewind
-      lines = {:plain => fp.readlines}
-      fp.close()
-      lines[opts[:output]] = 
-        highlight_string(raw_string, opts[:output]).split(/\n/) if 
-        opts[:output]
+      # (GF) rewind does not work in JRuby with a jar:file:... filename
+      # (GF) read file once and only create string if required by opts[:output]
+      lines = { :plain => File.readlines(path) }
+      if opts[:output]
+        lines[opts[:output]] = highlight_string(lines[:plain].join, opts[:output]).split(/\n/)
+      end
     rescue 
       ##  print '*** cannot open', path, ':', msg
       return nil

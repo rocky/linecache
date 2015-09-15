@@ -183,13 +183,11 @@ task :install => :gem do
   end
 end
 
-task :install_jruby => :gem do
-  namespace :jruby do
-    jruby_spec = default_spec.clone
-    jruby_spec.platform   = "java"
-    jruby_spec.files      = jruby_spec.files.reject {|f| f =~ /^ext/ }
-    jruby_spec.extensions = []
-    
-    Gem::PackageTask.new(jruby_spec) {}
-  end
+namespace :jruby do
+  jruby_spec = default_spec.clone
+  jruby_spec.platform   = "java"
+  jruby_spec.files      = jruby_spec.files.reject {|f| f =~ /^ext/ }
+  jruby_spec.extensions = []
+  Gem::PackageTask.new(jruby_spec) {}
 end
+

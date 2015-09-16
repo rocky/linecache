@@ -30,7 +30,7 @@ FILES = FileList[
   'test/*.rb',
   'test/data/*.rb',
   'test/short-file'
-]                        
+]
 
 desc 'Test everything'
 Rake::TestTask.new(:test) do |t|
@@ -51,7 +51,7 @@ end
 desc 'Test everything - same as test.'
 task :check => :test
 
-desc 'Create a GNU-style ChangeLog via svn2cl'
+desc 'Create a GNU-style ChangeLog via git2cl'
 task :ChangeLog do
   system('git log --pretty --numstat --summary | git2cl > ChangeLog')
 end
@@ -61,7 +61,7 @@ gem_file = nil
 # Base GEM Specification
 default_spec = Gem::Specification.new do |spec|
   spec.name = 'linecache'
-  
+
   spec.homepage = 'http://rubyforge.org/projects/rocky-hacks/linecache'
   spec.summary = 'Read file with caching'
   spec.description = <<-EOF
@@ -73,15 +73,15 @@ EOF
 
   spec.author = 'R. Bernstein'
   spec.email = 'rockyb@rubyforge.net'
+  spec.licenses = ['GPL2']
   spec.platform = Gem::Platform::RUBY
   spec.require_path = 'lib'
-  spec.files = FILES.to_a  
+  spec.files = FILES.to_a
   spec.extensions = ['ext/linecache/extconf.rb']
 
   spec.required_ruby_version = '>= 1.8.7'
   spec.date = Time.now
-  spec.rubyforge_project = 'rocky-hacks'
-  
+
   # rdoc
   spec.has_rdoc = true
   spec.extra_rdoc_files = ['README', 'lib/linecache.rb', 'lib/linecache/tracelines.rb']
@@ -122,29 +122,8 @@ task :win32_gem do
   rm(target)
 end
 
-desc 'Publish linecache to RubyForge.'
-task :publish do 
-  require 'rake/contrib/sshpublisher'
-  
-  # Get ruby-debug path.
-  ruby_debug_path = File.expand_path(File.dirname(__FILE__))
-
-  publisher = Rake::SshDirPublisher.new('rockyb@rubyforge.org',
-        '/var/www/gforge-projects/rocky-hacks/linecache', ruby_debug_path)
-end
-
-desc 'Remove residue from running patch'
-task :rm_patch_residue do
-  FileUtils.rm_rf Dir.glob('**/*.{rej,orig}'), :verbose => true
-end
-
-desc 'Remove ~ backup files'
-task :rm_tilde_backups do
-  FileUtils.rm_rf Dir.glob('**/*~'), :verbose => true
-end
-
 desc 'Remove built files'
-task :clean => [:clobber_package, :clobber_rdoc, :rm_patch_residue, 
+task :clean => [:clobber_package, :clobber_rdoc, :rm_patch_residue,
                 :rm_tilde_backups] do
   cd 'ext' do
     if File.exists?('Makefile')
@@ -157,24 +136,22 @@ task :clean => [:clobber_package, :clobber_rdoc, :rm_patch_residue,
 end
 
 # ---------  RDoc Documentation ------
-desc 'Generate rdoc documentation'
-RDoc::Task.new('rdoc') do |rdoc|
+require 'rdoc/task'
+desc "Generate rdoc documentation"
+Rake::RDocTask.new("rdoc") do |rdoc|
   rdoc.rdoc_dir = 'doc'
-  rdoc.title    = "linecache #{LineCache::VERSION} Documentation"
-  rdoc.options << '--main' << 'README'
-  rdoc.rdoc_files.include('ext/**/*.c',
-                          'lib/*.rb', 
-                          'README', 
-                          'COPYING')
-end
+  rdoc.title    = "LineCache #{LineCache::VERSION} Documentation"
 
-desc 'Publish the release files to RubyForge.'
-task :rubyforge_upload do
-  `rubyforge login`
-  release_command = "rubyforge add_release #{PKG_NAME} #{PKG_NAME} '#{PKG_NAME}-#{PKG_VERSION}' pkg/#{PKG_NAME}-#{PKG_VERSION}.gem"
-  puts release_command
-  system(release_command)
+  # Show source inline with line numbers
+  rdoc.options += %w(--inline-source --line-numbers)
+
+  # Make the README file the start page for the generated html
+  rdoc.options += %w(--main README)
+
+  rdoc.rdoc_files.include('lib/*.rb', 'README', 'COPYING')
 end
+desc "Same as rdoc"
+task :doc => :rdoc
 
 desc 'Install the gem locally'
 task :install => :gem do
@@ -183,13 +160,10 @@ task :install => :gem do
   end
 end
 
-task :install_jruby => :gem do
-  namespace :jruby do
-    jruby_spec = default_spec.clone
-    jruby_spec.platform   = "java"
-    jruby_spec.files      = jruby_spec.files.reject {|f| f =~ /^ext/ }
-    jruby_spec.extensions = []
-    
-    Gem::PackageTask.new(jruby_spec) {}
-  end
+namespace :jruby do
+  jruby_spec = default_spec.clone
+  jruby_spec.platform   = "java"
+  jruby_spec.files      = jruby_spec.files.reject {|f| f =~ /^ext/ }
+  jruby_spec.extensions = []
+  Gem::PackageTask.new(jruby_spec) {}
 end

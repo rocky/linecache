@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 #
-#   Copyright (C) 2007, 2008, 2010-2012 Rocky Bernstein <rockyb@rubyforge.net>
+#   Copyright (C) 2007, 2008, 2010-2012, 2015 Rocky Bernstein <rockyb@rubyforge.net>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@
 #  # Note lines[6] == line (if /tmp/myruby.rb has 6 lines)
 #
 #  LineCache::clear_file_cache
+#  LineCache::clear_file_cache('/tmp/myruby.rb')
 #  LineCache::update_cache   # Check for modifications of all cached files.
 #
 # Some parts of the interface is derived from the Python module of the

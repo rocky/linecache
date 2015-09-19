@@ -1,3 +1,9 @@
+2015-09-19  rocky <rockyb@rubyforge.org>
+
+	* : commit 1269d6b9632f95569db4f220978933b8ce3981be Merge: a262010
+	01d4fd2 Author: R. Bernstein <rocky@users.noreply.github.com> Date:
+	Wed Sep 16 18:35:51 2015 -0400
+
 2015-09-16  R. Bernstein <rocky@users.noreply.github.com>
 
 	* : Merge pull request #5 from gfowley/master read lines from source file in .jar...

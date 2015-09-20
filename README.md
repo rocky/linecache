@@ -25,5 +25,10 @@ source lines.
     LineCache::update_cache   # Check for modifications of all cached files.
 ```
 
-Git branches *ruby-1.9* and *ruby-2.1* for code for those respective
-Ruby versions. A patched version of Ruby is needed for this to work. The patches sources are [here](https://code.google.com/p/ruby-19-debugger/).
+The master branch handles *ruby-1.8* and *jruby*.
+
+Use git branches *ruby-1.9* and *ruby-2.1* for code for those respective
+Ruby versions. However a patched version of Ruby is needed for this to work. The patches sources are [here](https://sourceforge.net/projects/ruby-debugger-runtime/). For 1.9 and 2.x versions that don't require patched ruby see
+https://rubygems.org/search?utf8=%E2%9C%93&query=linecache
+
+I'm sorry there are so many branches and forks of essentially the same thing.

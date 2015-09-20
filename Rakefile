@@ -21,7 +21,7 @@ FILES = FileList[
   'COPYING',
   'ChangeLog',
   'NEWS',
-  'README',
+  'README.md',
   'Rakefile',
   'ext/linecache/trace_nums.c',
   'ext/linecache/trace_nums.h',
@@ -84,7 +84,7 @@ EOF
 
   # rdoc
   spec.has_rdoc = true
-  spec.extra_rdoc_files = ['README', 'lib/linecache.rb', 'lib/linecache/tracelines.rb']
+  spec.extra_rdoc_files = ['README.md', 'lib/linecache.rb', 'lib/linecache/tracelines.rb']
 
   spec.test_files = FileList['test/*.rb']
   gem_file = "#{spec.name}-#{spec.version}.gem"
@@ -145,10 +145,10 @@ Rake::RDocTask.new("rdoc") do |rdoc|
   # Show source inline with line numbers
   rdoc.options += %w(--inline-source --line-numbers)
 
-  # Make the README file the start page for the generated html
-  rdoc.options += %w(--main README)
+  # Make the README.md file the start page for the generated html
+  rdoc.options += %w(--main README.md)
 
-  rdoc.rdoc_files.include('lib/*.rb', 'README', 'COPYING')
+  rdoc.rdoc_files.include('lib/*.rb', 'README.md', 'COPYING')
 end
 desc "Same as rdoc"
 task :doc => :rdoc
